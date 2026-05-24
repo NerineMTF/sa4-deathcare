@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Death Arc — Urgency–Complexity Matrix</title>
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:'Georgia',serif;background:#FAFAF8;color:#2C2C2A;font-size:13px}
+.hdr{padding:1.5rem 2rem;border-bottom:1.5px solid #2C2C2A}
+.hdr h1{font-size:1.3rem;font-weight:normal;letter-spacing:-0.01em}
+.hdr p{font-size:0.78rem;color:#5F5E5A;margin-top:0.35rem;line-height:1.6}
+.legend{display:flex;flex-wrap:wrap;gap:0.6rem 2rem;padding:0.75rem 2rem;border-bottom:1px solid #D3D1C7;background:#F8F7F4}
+.li{display:flex;align-items:center;gap:7px;font-size:0.75rem;color:#444441}
+.ld{width:11px;height:11px;border-radius:50%;flex-shrink:0}
+.chart-wrap{padding:2rem;overflow-x:auto}
+.chart{position:relative;width:800px;height:560px;border-left:2px solid #2C2C2A;border-bottom:2px solid #2C2C2A}
+.q{position:absolute;border-radius:2px}
+.q-label{position:absolute;font-size:0.68rem;letter-spacing:0.04em;text-transform:uppercase;font-weight:bold;opacity:0.55;line-height:1.4}
+.dot{position:absolute;width:9px;height:9px;border-radius:50%;transform:translate(-50%,-50%);cursor:default;z-index:2}
+.label{position:absolute;font-size:0.68rem;line-height:1.4;max-width:110px;z-index:3;color:#2C2C2A;transform:translate(-50%,7px);text-align:center;pointer-events:none}
+.axis-label{position:absolute;font-size:0.72rem;color:#888780;letter-spacing:0.05em;text-transform:uppercase}
+.tick{position:absolute;font-size:0.68rem;color:#888780}
+.axis-line{position:absolute;background:#D3D1C7}
+.ft{font-size:0.7rem;color:#888780;padding:0.75rem 2rem;border-top:1.5px solid #2C2C2A;line-height:1.7}
+.failure-zone{position:absolute;background:rgba(216,90,48,0.07);border:1px dashed rgba(216,90,48,0.4);border-radius:4px}
+.fz-label{position:absolute;font-size:0.65rem;color:#D85A30;font-weight:bold;letter-spacing:0.04em;text-transform:uppercase}
+</style>
+</head>
+<body>
+<div class="hdr">
+  <h1>Death arc — urgency–complexity matrix</h1>
+  <p>Tasks plotted by how time-pressured they are and how much legal knowledge is required &nbsp;·&nbsp; Upper-left quadrant = system failure zone for unprepared whānau &nbsp;·&nbsp; SA4 research reference &nbsp;·&nbsp; N Walbran 2026</p>
+</div>
+<div class="legend">
+  <div class="li"><div class="ld" style="background:#A32D2D"></div>Death event</div>
+  <div class="li"><div class="ld" style="background:#5F5E5A"></div>Body &amp; funeral</div>
+  <div class="li"><div class="ld" style="background:#854F0B"></div>Estate admin</div>
+  <div class="li"><div class="ld" style="background:#0F6E56"></div>Succession</div>
+  <div class="li"><div class="ld" style="background:#085041"></div>Closing estate</div>
+  <div class="li"><div class="ld" style="background:#185FA5"></div>Pre-death</div>
+</div>
+<div class="chart-wrap">
+<div class="chart" id="chart">
+
+  <!-- Quadrant backgrounds -->
+  <div class="q" style="left:0;top:0;width:50%;height:50%;background:rgba(216,90,48,0.04)"></div>
+  <div class="q" style="left:50%;top:0;width:50%;height:50%;background:rgba(186,117,23,0.03)"></div>
+  <div class="q" style="left:0;top:50%;width:50%;height:50%;background:rgba(83,74,183,0.03)"></div>
+  <div class="q" style="left:50%;top:50%;width:50%;height:50%;background:rgba(30,158,117,0.03)"></div>
+
+  <!-- Failure zone highlight -->
+  <div class="failure-zone" style="left:2%;top:2%;width:46%;height:46%"></div>
+  <div class="fz-label" style="left:3%;top:3%">System failure zone<br><span style="font-weight:normal;text-transform:none;letter-spacing:0">High urgency + high complexity</span></div>
+
+  <!-- Quadrant labels -->
+  <div class="q-label" style="left:52%;top:4%;color:#854F0B">Manageable<br>with legal help</div>
+  <div class="q-label" style="left:2%;top:54%;color:#185FA5">Low pressure<br>high knowledge</div>
+  <div class="q-label" style="left:52%;top:54%;color:#1D9E75">Low burden<br>zone</div>
+
+  <!-- Axis tick lines -->
+  <div class="axis-line" style="left:25%;top:0;width:1px;height:100%;opacity:0.3"></div>
+  <div class="axis-line" style="left:50%;top:0;width:1px;height:100%;opacity:0.3"></div>
+  <div class="axis-line" style="left:75%;top:0;width:1px;height:100%;opacity:0.3"></div>
+  <div class="axis-line" style="left:0;top:25%;width:100%;height:1px;opacity:0.3"></div>
+  <div class="axis-line" style="left:0;top:50%;width:100%;height:1px;opacity:0.3"></div>
+  <div class="axis-line" style="left:0;top:75%;width:100%;height:1px;opacity:0.3"></div>
+
+  <!-- X axis ticks -->
+  <div class="tick" style="left:23%;bottom:-20px">Hours</div>
+  <div class="tick" style="left:47%;bottom:-20px">Days</div>
+  <div class="tick" style="left:72%;bottom:-20px">Weeks</div>
+  <div class="tick" style="right:0;bottom:-20px">Months+</div>
+
+  <!-- Y axis ticks -->
+  <div class="tick" style="left:-48px;top:72%;width:48px;text-align:right">Low</div>
+  <div class="tick" style="left:-60px;top:47%;width:60px;text-align:right">Medium</div>
+  <div class="tick" style="left:-48px;top:22%;width:48px;text-align:right">High</div>
+
+  <!-- Y axis label -->
+  <div class="axis-label" style="left:-88px;top:50%;transform:rotate(-90deg) translateX(-50%);transform-origin:left center;white-space:nowrap">Legal complexity</div>
+
+  <!-- X axis label -->
+  <div class="axis-label" style="bottom:-42px;left:50%;transform:translateX(-50%);white-space:nowrap">Urgency (time pressure)</div>
+
+  <!-- DOTS AND LABELS -->
+  <!-- x: 0=left(immediate) 100=right(months) | y: 0=top(high complexity) 100=bottom(low) -->
+
+  <!-- Death event tasks -->
+  <div class="dot" style="left:8%;top:15%;background:#A32D2D" title="Notify coroner"></div>
+  <div class="label" style="left:8%;top:15%">Notify coroner<br>(if required)</div>
+
+  <div class="dot" style="left:12%;top:38%;background:#A32D2D" title="Contact funeral director"></div>
+  <div class="label" style="left:12%;top:38%">Contact funeral director</div>
+
+  <div class="dot" style="left:6%;top:55%;background:#A32D2D" title="Notify family"></div>
+  <div class="label" style="left:6%;top:55%">Notify<br>family</div>
+
+  <div class="dot" style="left:18%;top:22%;background:#A32D2D" title="Immediate tikanga decisions"></div>
+  <div class="label" style="left:18%;top:22%">Immediate tikanga<br>decisions</div>
+
+  <!-- Body & funeral tasks -->
+  <div class="dot" style="left:32%;top:28%;background:#5F5E5A" title="Apply for cremation certificates"></div>
+  <div class="label" style="left:32%;top:28%">Apply for cremation certificates</div>
+
+  <div class="dot" style="left:28%;top:45%;background:#5F5E5A" title="Register death / death certificate"></div>
+  <div class="label" style="left:28%;top:45%">Register death &amp; obtain certificates</div>
+
+  <div class="dot" style="left:38%;top:58%;background:#5F5E5A" title="Plan funeral service"></div>
+  <div class="label" style="left:38%;top:58%">Plan funeral service</div>
+
+  <!-- Estate admin tasks -->
+  <div class="dot" style="left:22%;top:18%;background:#854F0B" title="Secure estate assets"></div>
+  <div class="label" style="left:22%;top:18%">Secure<br>estate assets</div>
+
+  <div class="dot" style="left:45%;top:12%;background:#854F0B" title="Notify banks"></div>
+  <div class="label" style="left:45%;top:12%">Notify banks / freeze accounts</div>
+
+  <div class="dot" style="left:62%;top:10%;background:#854F0B" title="Apply for probate"></div>
+  <div class="label" style="left:62%;top:10%">Apply for probate</div>
+
+  <div class="dot" style="left:68%;top:18%;background:#854F0B" title="Māori Land Court succession"></div>
+  <div class="label" style="left:68%;top:18%">Māori Land Court succession order</div>
+
+  <div class="dot" style="left:58%;top:32%;background:#854F0B" title="Notify IRD / estate IRD number"></div>
+  <div class="label" style="left:58%;top:32%">Notify IRD &amp; get estate IRD number</div>
+
+  <div class="dot" style="left:72%;top:42%;background:#854F0B" title="Collect assets"></div>
+  <div class="label" style="left:72%;top:42%">Collect assets (post-probate)</div>
+
+  <div class="dot" style="left:55%;top:52%;background:#854F0B" title="Advertise for creditors"></div>
+  <div class="label" style="left:55%;top:52%">Advertise for creditors<br>(6-week min)</div>
+
+  <!-- Succession tasks -->
+  <div class="dot" style="left:80%;top:15%;background:#0F6E56" title="FPA claim"></div>
+  <div class="label" style="left:80%;top:15%">FPA / testamentary<br>promises claim</div>
+
+  <div class="dot" style="left:78%;top:45%;background:#0F6E56" title="Relationship property election"></div>
+  <div class="label" style="left:78%;top:45%">Relationship property election by spouse</div>
+
+  <div class="dot" style="left:85%;top:62%;background:#0F6E56" title="Apply for survivor benefits"></div>
+  <div class="label" style="left:85%;top:62%">Apply for WINZ survivor benefits</div>
+
+  <div class="dot" style="left:70%;top:68%;background:#0F6E56" title="ACC claim"></div>
+  <div class="label" style="left:70%;top:68%">ACC fatal injury claim</div>
+
+  <!-- Closing estate tasks -->
+  <div class="dot" style="left:88%;top:20%;background:#085041" title="File final tax returns"></div>
+  <div class="label" style="left:88%;top:20%">File final IR3 &amp; estate IR6 returns</div>
+
+  <div class="dot" style="left:93%;top:32%;background:#085041" title="GST deregistration"></div>
+  <div class="label" style="left:93%;top:32%">GST deregistration<br>(if applicable)</div>
+
+  <div class="dot" style="left:90%;top:55%;background:#085041" title="LINZ land transmission"></div>
+  <div class="label" style="left:90%;top:55%">LINZ land<br>transfer</div>
+
+  <div class="dot" style="left:95%;top:72%;background:#085041" title="Final distribution"></div>
+  <div class="label" style="left:95%;top:72%">Final distribution to beneficiaries</div>
+
+  <!-- Pre-death tasks -->
+  <div class="dot" style="left:15%;top:78%;background:#185FA5" title="Make will"></div>
+  <div class="label" style="left:15%;top:78%">Make will<br>&amp; EPA</div>
+
+  <div class="dot" style="left:40%;top:82%;background:#185FA5" title="Pre-paid funeral"></div>
+  <div class="label" style="left:40%;top:82%">Pre-paid funeral<br>arrangements</div>
+
+</div>
+</div>
+<div class="ft">
+  SA4 Research — Nerine Walbran 2026 &nbsp;·&nbsp; Matrix positions are qualitative judgements based on field observation and cross-transcript synthesis, not empirical measurement. Tasks in the upper-left failure zone are those where high time pressure intersects with significant legal complexity — the conditions under which unprepared whānau are most vulnerable. &nbsp;·&nbsp; This map is a research artefact and does not constitute legal advice.
+</div>
+</body>
+</html>

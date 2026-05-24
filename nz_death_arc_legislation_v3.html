@@ -1,0 +1,309 @@
+
+<h2 class="sr-only">New Zealand death arc legislation — interactive reference including administering agency, year of last principal amendment, and amendment caveats</h2>
+<div style="padding:0.5rem 0 2rem">
+
+<input type="text" id="srch" placeholder="Search by name, provision, actor, or agency…" style="width:100%;box-sizing:border-box;margin-bottom:1.25rem">
+
+<div style="margin-bottom:1rem">
+  <div style="font-size:11px;text-transform:uppercase;letter-spacing:.05em;font-weight:500;color:var(--color-text-secondary);margin-bottom:7px">Phase of death arc</div>
+  <div id="ph-tabs" style="display:flex;flex-wrap:wrap;gap:6px"></div>
+</div>
+
+<div style="margin-bottom:1rem">
+  <div style="font-size:11px;text-transform:uppercase;letter-spacing:.05em;font-weight:500;color:var(--color-text-secondary);margin-bottom:7px">Administering agency <span id="ag-clear" style="display:none;font-weight:400;text-transform:none;letter-spacing:0;color:var(--color-text-info);cursor:pointer;margin-left:8px" onclick="clearAgency()">Clear</span></div>
+  <div id="ag-pills" style="display:flex;flex-wrap:wrap;gap:5px"></div>
+</div>
+
+<div style="margin-bottom:1.25rem">
+  <div style="font-size:11px;text-transform:uppercase;letter-spacing:.05em;font-weight:500;color:var(--color-text-secondary);margin-bottom:7px">Filter by actor <span id="ac-clear" style="display:none;font-weight:400;text-transform:none;letter-spacing:0;color:var(--color-text-info);cursor:pointer;margin-left:8px" onclick="clearActors()">Clear</span></div>
+  <div id="ac-pills" style="display:flex;flex-wrap:wrap;gap:5px"></div>
+</div>
+
+<div id="info" style="font-size:13px;color:var(--color-text-secondary);margin-bottom:10px;min-height:18px"></div>
+<div id="grid" style="display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,295px),1fr));gap:10px"></div>
+<div style="margin-top:1.5rem;padding-top:1rem;border-top:0.5px solid var(--color-border-tertiary);font-size:11px;color:var(--color-text-tertiary)">Year of last principal amendment is approximate. Verify current version at legislation.govt.nz before citing.</div>
+</div>
+
+<script>
+const PH=[
+  {id:'all',label:'All phases',icon:'ti-layout-grid'},
+  {id:'predeath',label:'Pre-death',icon:'ti-heart',bg:'var(--color-background-info)',tc:'var(--color-text-info)',bd:'var(--color-border-info)',sc:'#185FA5'},
+  {id:'death',label:'Death event',icon:'ti-alert-triangle',bg:'var(--color-background-danger)',tc:'var(--color-text-danger)',bd:'var(--color-border-danger)',sc:'#A32D2D'},
+  {id:'funeral',label:'Body & funeral',icon:'ti-flame',bg:'var(--color-background-secondary)',tc:'var(--color-text-secondary)',bd:'var(--color-border-secondary)',sc:'#5F5E5A'},
+  {id:'admin',label:'Estate admin',icon:'ti-briefcase',bg:'var(--color-background-warning)',tc:'var(--color-text-warning)',bd:'var(--color-border-warning)',sc:'#854F0B'},
+  {id:'succession',label:'Succession',icon:'ti-users',bg:'var(--color-background-success)',tc:'var(--color-text-success)',bd:'var(--color-border-success)',sc:'#0F6E56'},
+  {id:'closing',label:'Closing estate',icon:'ti-check',bg:'var(--color-background-success)',tc:'var(--color-text-success)',bd:'var(--color-border-success)',sc:'#27500A'},
+];
+const phMap=Object.fromEntries(PH.map(p=>[p.id,p]));
+const TC={Act:{bg:'var(--color-background-info)',tc:'var(--color-text-info)'},Regulation:{bg:'var(--color-background-success)',tc:'var(--color-text-success)'},Rules:{bg:'var(--color-background-warning)',tc:'var(--color-text-warning)'}};
+const AC=['Will-maker','Executor/administrator','Trustee','Beneficiary','Spouse/partner','Children','Medical practitioner','Coroner','Police/WorkSafe','Funeral director','Registrar-General','Court','Lawyer','IRD','WINZ/MSD','ACC','Bank/insurer','Māori Trustee','Public Trust','Employer','LINZ','Creditor'];
+const AGENCIES=['Ministry of Justice','Inland Revenue','Ministry of Health','MBIE','Department of Internal Affairs','Ministry of Social Development','Te Arawhiti','LINZ','WorkSafe NZ','ACC','Reserve Bank of NZ'];
+
+const L=[
+{id:1,name:'Wills Act',year:2007,type:'Act',phases:['predeath','succession'],actors:['Will-maker','Executor/administrator','Beneficiary','Lawyer','Court'],agency:'Ministry of Justice',amended:2021,
+desc:'Governs the making, witnessing, revocation, and interpretation of wills.',
+provs:['Testamentary capacity: 18+ years, sound and disposing mind','Formal execution: signed by testator before 2 witnesses','Witnesses and their spouses cannot be beneficiaries','Revocation by marriage/civil union, written act, or destruction','Court may validate informal wills if testamentary intention is clear (s14)','Privileged wills for armed forces on active service and mariners'],
+link:'https://www.legislation.govt.nz/act/public/2007/0036/latest/whole.html'},
+
+{id:2,name:'Protection of Personal and Property Rights Act',year:1988,type:'Act',phases:['predeath'],actors:['Will-maker','Lawyer','Court','Trustee','Medical practitioner'],agency:'Ministry of Justice',amended:2016,
+desc:'Provides for enduring powers of attorney and court-appointed welfare guardians when mental capacity is lost.',
+provs:['EPA — Property: authorises attorney to manage property if donor loses capacity','EPA — Personal care and welfare: decisions on health, residence, and living','Must be witnessed by a lawyer who certifies donor understands the document','Welfare EPA cannot be activated while donor retains capacity','Family Court appoints welfare guardian or property manager if no EPA exists','Attorney must act in donor\'s best interests, not own interests'],
+link:'https://www.legislation.govt.nz/act/public/1988/0004/latest/whole.html'},
+
+{id:3,name:'Trusts Act',year:2019,type:'Act',phases:['predeath','admin','closing'],actors:['Will-maker','Trustee','Beneficiary','Lawyer','Court'],agency:'Ministry of Justice',amended:2021,
+desc:'Modernised framework for all trusts including testamentary trusts — trustee duties, beneficiary rights, and variation.',
+provs:['Mandatory duties (cannot be excluded): act honestly, exercise powers for proper purpose','Default duties: invest prudently, not benefit personally without consent','Disclosure obligations: trustees must give beneficiaries sufficient trust information','Trustee appointment, retirement, and removal procedures','Variation of trust by court order or consent of all beneficiaries','Anti-avoidance: court may set aside trust established to defeat creditors'],
+link:'https://www.legislation.govt.nz/act/public/2019/0038/latest/whole.html'},
+
+{id:4,name:'Property (Relationships) Act',year:1976,type:'Act',phases:['predeath','succession'],actors:['Will-maker','Spouse/partner','Executor/administrator','Court','Lawyer'],agency:'Ministry of Justice',amended:2019,
+desc:'Equal sharing of relationship property on death for married, civil union, and de facto couples of 3+ years.',
+provs:['Surviving spouse/partner may elect property sharing rather than taking under will','Election must be made within 6 months of probate/admin grant','De facto relationships of 3+ years included under Part 2','Contracting out (s21 agreement) requires independent legal advice for both parties','KiwiSaver balances and superannuation included as relationship property'],
+link:'https://www.legislation.govt.nz/act/public/1976/0166/latest/whole.html'},
+
+{id:5,name:'KiwiSaver Act',year:2006,type:'Act',phases:['predeath','succession','closing'],actors:['Will-maker','Executor/administrator','Beneficiary','IRD','Bank/insurer'],agency:'Inland Revenue',amended:2021,
+desc:'Governs KiwiSaver accounts including death benefit nominations and distribution of funds on death.',
+provs:['Members may nominate non-estate beneficiaries to receive balance on death','Provider must be notified of death — may require death certificate and probate','All employer and member contributions fully vested on death','PIE income may affect final tax position; IRD notified of account closure','Relationship property rules may apply to KiwiSaver balance'],
+link:'https://www.legislation.govt.nz/act/public/2006/0040/latest/whole.html'},
+
+{id:6,name:'Te Ture Whenua Māori Act (Māori Land Act)',year:1993,type:'Act',phases:['predeath','succession','closing'],actors:['Will-maker','Beneficiary','Māori Trustee','Court','Executor/administrator'],agency:'Te Arawhiti',amended:2017,
+desc:'Special rules for succession to Māori freehold land — protects whakapapa connections to land through the Māori Land Court.',
+provs:['Māori freehold land cannot pass by will alone — Māori Land Court must make a succession order','Preferred classes of alienees: descendants of previous owners and whanaunga','Protects whakapapa connection to land: prevents alienation outside iwi/hapū lines','Court may recognise whāngai (customary adoption) in succession proceedings','Māori Trustee administers fragmented or small Māori land interests','Whānau trust or ahu whenua trust may hold Māori land collectively'],
+note:'Amendment year uncertain. A major reform attempt in 2016–17 was withdrawn without substantive change. The Act may not have been meaningfully amended since earlier. Verify before citing.',
+link:'https://www.legislation.govt.nz/act/public/1993/0004/latest/whole.html'},
+
+{id:7,name:'Life Insurance Act',year:1908,type:'Act',phases:['predeath','succession'],actors:['Will-maker','Beneficiary','Bank/insurer','Executor/administrator'],agency:'Reserve Bank of NZ',amended:2010,
+desc:'Regulates life insurance including beneficiary nominations and policy proceeds on the insured person\'s death.',
+provs:['Life policy proceeds may be directed to named beneficiaries outside the estate','Policies written in trust for beneficiaries are protected from the insured\'s creditors','Assignment of policy requires compliance with the Act','Insurable interest must exist at time policy is effected'],
+link:'https://www.legislation.govt.nz/act/public/1908/0105/latest/whole.html'},
+
+{id:8,name:'Mental Health (Compulsory Assessment and Treatment) Act',year:1992,type:'Act',phases:['predeath'],actors:['Will-maker','Medical practitioner','Court'],agency:'Ministry of Health',amended:2017,
+desc:'Governs compulsory treatment for serious mental illness — directly relevant to testamentary capacity assessments.',
+provs:['Criteria: serious mental disorder posing risk to self or others','Assessment by psychiatrist and certifying medical practitioner','Rights of patients including legal representation and review tribunal','Interface with PPPR Act when capacity to manage property is in question','Medical records may be relevant evidence in later will challenges'],
+link:'https://www.legislation.govt.nz/act/public/1992/0046/latest/whole.html'},
+
+{id:9,name:'Births, Deaths, Marriages, and Relationships Registration Act',year:2021,type:'Act',phases:['death','funeral'],actors:['Medical practitioner','Registrar-General','Funeral director','Coroner'],agency:'Department of Internal Affairs',amended:2021,
+desc:'Requires registration of every death in NZ and governs death certificates and burial/cremation permits.',
+provs:['Medical practitioner must supply cause-of-death information within 3 working days','Informant (next of kin or funeral director) registers death with Registrar-General','Death cannot be registered until medical certificate or coroner\'s certificate is issued','Burial/cremation permit issued after registration — required before any body disposal','Non-natural or suspicious deaths must be reported to coroner first'],
+link:'https://www.legislation.govt.nz/act/public/2021/0048/latest/whole.html'},
+
+{id:10,name:'Coroners Act',year:2006,type:'Act',phases:['death','funeral'],actors:['Coroner','Police/WorkSafe','Medical practitioner','Funeral director','Court'],agency:'Ministry of Justice',amended:2016,
+desc:'Establishes the coronial system for investigating unexplained, sudden, unnatural, and in-custody deaths.',
+provs:['Reportable deaths: suicide, accident, no medical attendance within recent period, in custody, workplace','Police must notify coroner of any reportable death immediately','Coroner has jurisdiction over the body until formally released','Coroner may order post-mortem; pathologist performs and reports','Inquest: public hearing for significant, complex, or in-custody deaths','Coroner may issue Preventing Future Deaths recommendations','Families: right to view body, receive information, and participate in inquest'],
+link:'https://www.legislation.govt.nz/act/public/2006/0038/latest/whole.html'},
+
+{id:11,name:'Health and Safety at Work Act',year:2015,type:'Act',phases:['death'],actors:['Employer','Police/WorkSafe','Court'],agency:'WorkSafe NZ',amended:2019,
+desc:'Mandates immediate notification of WorkSafe NZ for any workplace death and enables prosecution of duty-holders.',
+provs:['Notifiable event: death of any person — must notify WorkSafe immediately (s56)','Scene must be preserved and not disturbed until WorkSafe grants clearance','PCBU has the primary duty of care','Officers of companies have personal due diligence obligations','Prosecution: up to $3M fine for organisations, $600K for individuals','Families have the right to information about the investigation'],
+link:'https://www.legislation.govt.nz/act/public/2015/0070/latest/whole.html'},
+
+{id:12,name:'Accident Compensation Act',year:2001,type:'Act',phases:['death','succession'],actors:['ACC','Medical practitioner','Employer','Beneficiary','Executor/administrator'],agency:'ACC',amended:2022,
+desc:'Provides ACC compensation to surviving dependants when death results from accident or work injury. ACC is the exclusive remedy.',
+provs:['Fatal injury lump sum: set amount to surviving spouse/partner, then dependent children','Weekly survivor\'s grant to surviving partner (time-limited)','Child weekly compensation to each dependent child until age 18','Funeral grant: contribution towards burial or cremation costs','ACC is exclusive remedy: no civil tort claim is allowed for accidental deaths','Claim must be lodged with ACC by the estate or dependants within time limits'],
+link:'https://www.legislation.govt.nz/act/public/2001/0049/latest/whole.html'},
+
+{id:13,name:'Crimes Act',year:1961,type:'Act',phases:['death'],actors:['Police/WorkSafe','Court','Coroner'],agency:'Ministry of Justice',amended:2022,
+desc:'Defines homicide offences and criminal law applicable when a death results from criminal conduct.',
+provs:['Murder: intentional killing with specified mental states (s167)','Manslaughter: culpable homicide not amounting to murder (s171)','Aiding and abetting suicide is an offence (s179)','Duty to provide necessities of life (s151) — failure causing death may be culpable homicide','Interference with a corpse and preventing lawful burial are criminal offences'],
+link:'https://www.legislation.govt.nz/act/public/1961/0043/latest/whole.html'},
+
+{id:14,name:'Burial and Cremation Act',year:1964,type:'Act',phases:['funeral'],actors:['Funeral director','Coroner','Registrar-General','Medical practitioner','Court'],agency:'Ministry of Health',amended:2019,
+desc:'Primary statute governing burial, cremation, cemeteries, and licensing of funeral directors in New Zealand.',
+provs:['Burial or cremation permit required before any disposal of human remains','Funeral directors must hold a licence to carry on the business','Cemeteries and crematoria: establishment, operation, and closure requirements','Exhumation of remains requires a licence from the Minister of Health','Body transport: documentation and identification duties during transit','Urupa (Māori burial grounds) recognised and protected','Local authorities control the administration of public cemeteries'],
+note:'This Act is widely considered overdue for principal reform. There has been a prolonged pending review; the 2019 amendment was minor. The age and reform pressure on this Act is itself a relevant data point for a research argument about system design.',
+link:'https://www.legislation.govt.nz/act/public/1964/0075/latest/whole.html'},
+
+{id:15,name:'Cremation Regulations',year:2018,type:'Regulation',phases:['funeral'],actors:['Funeral director','Medical practitioner','Coroner','Registrar-General'],agency:'Ministry of Health',amended:2018,
+desc:'Detailed requirements for cremation: certificates, medical referee approval, waiting periods, and record-keeping.',
+provs:['Two medical certificates required before cremation (Cremation 1 and 2 forms)','Medical referee approves cremation after reviewing both certificates','Coroner issues cremation certificate for reportable deaths','Minimum 48-hour waiting period after death (coroner may waive)','Crematorium must maintain a register of all cremations performed','Identity tags must accompany the body throughout the cremation process'],
+link:'https://www.legislation.govt.nz/regulation/public/2018/0037/latest/whole.html'},
+
+{id:16,name:'Health Act — public health provisions',year:1956,type:'Act',phases:['funeral'],actors:['Medical practitioner','Funeral director','Registrar-General'],agency:'Ministry of Health',amended:2020,
+desc:'Public health provisions for body disposal, particularly where there is an infectious disease risk.',
+provs:['Medical officer of health may direct immediate burial or cremation where infectious disease is involved','Powers to regulate transport and handling of bodies with infectious conditions','Standards for body handling to protect funeral workers and the public'],
+link:'https://www.legislation.govt.nz/act/public/1956/0065/latest/whole.html'},
+
+{id:17,name:'Consumer Guarantees Act',year:1993,type:'Act',phases:['funeral'],actors:['Funeral director','Executor/administrator'],agency:'MBIE',amended:2014,
+desc:'Consumer law applies to funeral services — guaranteeing acceptable quality, fitness for purpose, and accurate description.',
+provs:['Funeral services must be of acceptable quality (reasonable care and skill)','Services must match their description (e.g., specified casket type, service format)','Goods supplied (coffins, urns, memorials) must be of acceptable quality','Remedies: repair, replacement, or refund for breach of guarantee','Unfair contract terms in standard funeral contracts may be unenforceable'],
+link:'https://www.legislation.govt.nz/act/public/1993/0091/latest/whole.html'},
+
+{id:18,name:'Administration Act',year:1969,type:'Act',phases:['admin','succession'],actors:['Executor/administrator','Court','Lawyer','Public Trust','Beneficiary','Creditor'],agency:'Ministry of Justice',amended:2019,
+desc:'Central statute for estate administration — probate, letters of administration, intestacy rules, and executor duties.',
+provs:['Probate granted by the High Court to the executor named in the will','Administration (without will): priority — surviving spouse/partner first, then children','Intestacy distribution order: spouse/partner, issue, parents, siblings, then Crown','Executor duties: collect assets, pay debts and expenses, then distribute','Advertising for creditors: 6-week period before safe distribution recommended','Insolvent estates: priority order for paying classes of debts'],
+link:'https://www.legislation.govt.nz/act/public/1969/0052/latest/whole.html'},
+
+{id:19,name:'High Court Rules — Probate',year:2016,type:'Rules',phases:['admin'],actors:['Executor/administrator','Court','Lawyer','Registrar-General'],agency:'Ministry of Justice',amended:2020,
+desc:'Procedural rules governing probate and letters of administration applications in the High Court.',
+provs:['Application: affidavit in support, original will, inventory of estate assets','Small estates under $15,000 may use simplified procedure without formal probate','Caveat against grant: any person may lodge to prevent a grant being made','Revocation of grant (e.g., later will discovered, fraud)','Resealing: overseas probate or administration may be resealed for NZ assets'],
+link:'https://www.legislation.govt.nz/regulation/public/2016/0225/latest/whole.html'},
+
+{id:20,name:'Public Trust Act',year:2001,type:'Act',phases:['admin','closing'],actors:['Public Trust','Executor/administrator','Beneficiary','Court'],agency:'Ministry of Justice',amended:2013,
+desc:'Establishes Public Trust as a statutory trustee corporation — can act as executor, administrator, and ongoing trustee.',
+provs:['Public Trust may be appointed executor by will or by court order','May apply for administration on intestacy where no private administrator steps forward','Statutory executor powers without need for court direction on each step','Fee scale regulated by tariff of charges','Can act as trustee for ongoing testamentary trusts','Special powers for small estates and distribution without formal probate'],
+link:'https://www.legislation.govt.nz/act/public/2001/0100/latest/whole.html'},
+
+{id:21,name:'Trustee Act',year:1956,type:'Act',phases:['admin','succession','closing'],actors:['Trustee','Beneficiary','Court','Executor/administrator'],agency:'Ministry of Justice',amended:2021,
+desc:'Powers, duties, and court supervision of trustees — applies fully to testamentary trusts created by will.',
+provs:['Investment: prudent investor standard — diversification and regard to beneficiary needs','Power to sell, lease, and mortgage trust property as needed','Appointment, retirement, and removal of trustees by court or agreement','Benjamin order: court may permit distribution despite a missing beneficiary','Section 64: court may vary trust terms in emergency or for beneficiary convenience','Protection for trustee acting on legal advice or pursuant to court order'],
+link:'https://www.legislation.govt.nz/act/public/1956/0061/latest/whole.html'},
+
+{id:22,name:'Māori Trustee Act',year:1953,type:'Act',phases:['admin','closing'],actors:['Māori Trustee','Executor/administrator','Beneficiary'],agency:'Te Arawhiti',amended:2012,
+desc:'Establishes the Māori Trustee to administer Māori land interests and fragmented estate matters.',
+provs:['Māori Trustee may be appointed to administer fragmented Māori freehold land interests','Consolidation and amalgamation of small undivided shares in Māori land','Income collection from Māori land and distribution to registered owners','Common fund managed by Māori Trustee for collective benefit'],
+link:'https://www.legislation.govt.nz/act/public/1953/0095/latest/whole.html'},
+
+{id:23,name:'Land Transfer Act',year:2017,type:'Act',phases:['admin','closing'],actors:['Executor/administrator','LINZ','Beneficiary','Lawyer'],agency:'LINZ',amended:2021,
+desc:'Registration of title transmission from a deceased owner through executor to beneficiaries via LINZ.',
+provs:['Transmission application to LINZ with certified copy of probate or administration grant','Executor registered on certificate of title as personal representative','Transfer from executor to beneficiary by standard transfer instrument registered at LINZ','Joint tenancy: right of survivorship — no probate required, transmission by survivorship form','Tenancy in common: deceased\'s share passes through estate and requires transmission first','Caveats may be lodged to protect claims or interests against estate land'],
+link:'https://www.legislation.govt.nz/act/public/2017/0030/latest/whole.html'},
+
+{id:24,name:'Insolvency Act',year:2006,type:'Act',phases:['admin'],actors:['Creditor','Executor/administrator','Court'],agency:'MBIE',amended:2019,
+desc:'Applies where the estate is insolvent — Official Assignee may administer and creditor priority applies.',
+provs:['Insolvent estate may be administered under insolvency regime in lieu of executor','Official Assignee appointed by court to manage insolvent estate','Priority order: secured creditors first, then preferential, then unsecured','Void preferences: transactions within 2 years before death may be clawed back','Executor must not distribute if estate appears or may be insolvent'],
+link:'https://www.legislation.govt.nz/act/public/2006/0055/latest/whole.html'},
+
+{id:25,name:'Companies Act',year:1993,type:'Act',phases:['admin','closing'],actors:['Executor/administrator','Beneficiary','Creditor','LINZ'],agency:'MBIE',amended:2021,
+desc:'Governs transmission and transfer of shares and director vacancies on a shareholder\'s or director\'s death.',
+provs:['Shares transmit to executor on production of probate or administration grant','Executor may become registered shareholder or transfer shares directly to beneficiary','Director vacancy on death: board may appoint a replacement director','Executor entitled to dividends declared post-death on transmitted shares','Shareholder agreement provisions may modify default transmission rules'],
+link:'https://www.legislation.govt.nz/act/public/1993/0105/latest/whole.html'},
+
+{id:26,name:'Limitation Act',year:2010,type:'Act',phases:['admin'],actors:['Creditor','Executor/administrator','Court'],agency:'Ministry of Justice',amended:2017,
+desc:'Time limits for creditors bringing claims against estates, protecting executors who advertise and then distribute.',
+provs:['Basic limitation period: 6 years from accrual of cause of action','Longstop limitation: 15 years from the act or omission (absolute bar)','Creditor claims against an estate are barred after the limitation period expires','Executor may safely distribute after advertising and limitation periods have passed','Fraud or active concealment may extend the limitation period'],
+link:'https://www.legislation.govt.nz/act/public/2010/0110/latest/whole.html'},
+
+{id:27,name:'Family Protection Act',year:1955,type:'Act',phases:['succession'],actors:['Spouse/partner','Children','Court','Executor/administrator','Beneficiary'],agency:'Ministry of Justice',amended:2019,
+desc:'Allows eligible family members to claim adequate provision from an estate where the will or intestacy fails them.',
+provs:['Eligible claimants: spouse/civil union partner, de facto partner (2+ years), children, stepchildren, grandchildren','Court considers: financial needs, closeness of relationship, moral duty, size of estate','Time limit: 12 months from grant of probate or administration (court may extend)','Discretionary remedy — not an equal forced share entitlement','Moral duty to provide for financially dependent children is a strong factor','Award is a charge on the estate; not personal to beneficiaries'],
+link:'https://www.legislation.govt.nz/act/public/1955/0088/latest/whole.html'},
+
+{id:28,name:'Law Reform (Testamentary Promises) Act',year:1949,type:'Act',phases:['succession'],actors:['Executor/administrator','Court','Beneficiary'],agency:'Ministry of Justice',amended:2001,
+desc:'Allows claims against estates where the deceased promised to reward someone for services but failed to do so by will.',
+provs:['Three elements: promise by deceased, services rendered in reliance on it, failure to provide in will','Services may be personal care, work on property, or other benefit to the deceased','Promise need not be formal — conduct and circumstances may suffice','Claim must be filed within 12 months of grant of probate or administration','Court awards reasonable compensation charged against the estate assets'],
+note:'The core mechanism of this Act is essentially unchanged since 1949. The c.2001 amendment date reflects eligibility changes flowing from the Property (Relationships) Act — not a substantive change to the Act itself. Treat the amendment year with caution.',
+link:'https://www.legislation.govt.nz/act/public/1949/0008/latest/whole.html'},
+
+{id:29,name:'Social Security Act',year:2018,type:'Act',phases:['succession'],actors:['WINZ/MSD','Spouse/partner','Children','Executor/administrator'],agency:'Ministry of Social Development',amended:2020,
+desc:'Survivor benefits available through Work and Income to dependants of deceased persons.',
+provs:['Survivor\'s allowance: weekly benefit for surviving partners who meet income criteria','Orphan\'s benefit: for children under 18 who have lost both parents','Unsupported child\'s benefit: for children not covered by orphan\'s benefit','Estate recovery: MSD may recover overpaid benefits as a debt of the estate','NZ Super paid after date of death is a recoverable debt from the estate'],
+link:'https://www.legislation.govt.nz/act/public/2018/0032/latest/whole.html'},
+
+{id:30,name:'Charities Act',year:2005,type:'Act',phases:['succession'],actors:['Executor/administrator','Beneficiary','Court'],agency:'Department of Internal Affairs',amended:2013,
+desc:'Governs charitable bequests — cy-près doctrine and tax treatment of gifts to registered charities.',
+provs:['Gifts to registered charities in wills are income tax-exempt for the charity','Cy-près doctrine: if named charity ceases to exist, court redirects gift to similar purpose','Executor must verify the charity is still registered on Charities Register at time of distribution'],
+link:'https://www.legislation.govt.nz/act/public/2005/0039/latest/whole.html'},
+
+{id:31,name:'Employment Relations Act',year:2000,type:'Act',phases:['succession','closing'],actors:['Employer','Executor/administrator','Beneficiary'],agency:'MBIE',amended:2019,
+desc:'Final pay obligations to an employee\'s estate — wages, holiday pay, and any other accrued entitlements.',
+provs:['All wages and salary earned to the date of death are debts of the employer payable to the estate','Annual leave accrued to date of death must be paid out as an estate entitlement','Any applicable contractual notice payment entitlements become estate debts','Wages protection provisions (no deductions without authorisation) apply to final payments'],
+link:'https://www.legislation.govt.nz/act/public/2000/0024/latest/whole.html'},
+
+{id:32,name:'NZ Superannuation and Retirement Income Act',year:2001,type:'Act',phases:['succession','closing'],actors:['WINZ/MSD','Executor/administrator','Spouse/partner'],agency:'Ministry of Social Development',amended:2019,
+desc:'NZ Super ceases on death — overpayments recoverable from estate, and survivor\'s rate is adjusted.',
+provs:['NZ Super ceases on the date of death — any overpayment is a debt of the estate','Surviving spouse/partner\'s rate recalculated from couple rate to single living alone rate','Estate may claim any underpayment for the final payment period','MSD must be notified promptly of death to stop payments and calculate overpayment'],
+link:'https://www.legislation.govt.nz/act/public/2001/0084/latest/whole.html'},
+
+{id:33,name:'Income Tax Act',year:2007,type:'Act',phases:['closing'],actors:['Executor/administrator','IRD','Trustee','Beneficiary'],agency:'Inland Revenue',amended:2021,
+desc:'Tax obligations on death: final return for the deceased, and the estate as a separate taxpayer during administration.',
+provs:['Final income tax return (IR3) filed by executor for period from 1 April to date of death','Estate is a separate taxpayer from date of death — obtains own IRD number','Estate income (rents, interest, dividends) taxed at trustee rate (33%)','No capital gains tax in NZ — death is not a disposal event triggering tax','Bright-line property rule: death is a general exclusion','Executor personally liable for estate tax if estate distributed before IRD clearance'],
+link:'https://www.legislation.govt.nz/act/public/2007/0097/latest/whole.html'},
+
+{id:34,name:'Tax Administration Act',year:1994,type:'Act',phases:['closing'],actors:['Executor/administrator','IRD'],agency:'Inland Revenue',amended:2021,
+desc:'Procedural tax law: notification to IRD, filing obligations, and clearance before final estate distribution.',
+provs:['Executor must notify IRD of the death and apply for a new IRD number for the estate','Final IR3 return and estate IR6 trust returns filed each year during administration','IRD may audit or reassess the deceased\'s prior income tax returns within time limits','Tax debts rank as priority creditors of the estate (after secured creditors)','Executor personally liable for unpaid tax if estate distributed ignoring known tax debts'],
+link:'https://www.legislation.govt.nz/act/public/1994/0166/latest/whole.html'},
+
+{id:35,name:'Goods and Services Tax Act',year:1985,type:'Act',phases:['closing'],actors:['Executor/administrator','IRD'],agency:'Inland Revenue',amended:2019,
+desc:'GST obligations when the deceased was GST-registered — estate must file final returns and deregister.',
+provs:['If deceased was GST-registered, executor inherits the GST obligations for the estate','Final GST return must be filed covering taxable activity from last return to date of death','Sale of business assets during estate administration may trigger GST output tax','Going concern sale to a continuing buyer may be zero-rated if all conditions are met','Deregistration from GST required if the taxable activity does not continue after death'],
+link:'https://www.legislation.govt.nz/act/public/1985/0141/latest/whole.html'},
+
+{id:36,name:'Property Law Act',year:2007,type:'Act',phases:['admin','closing'],actors:['Executor/administrator','Creditor','Beneficiary','Court'],agency:'Ministry of Justice',amended:2015,
+desc:'Property law rules relevant to estate administration: mortgagee rights, co-ownership, and proprietary claims.',
+provs:['Mortgagee rights over estate property: executor must service or arrange repayment of mortgage','Proprietary estoppel claims may be brought against estate where deceased made representations about property','Co-ownership: tenancy in common share passes through estate and requires transmission','Partition of co-owned property may be ordered by court on executor\'s application','Caveatable interests must be registered on LINZ certificate of title to protect estate claims'],
+link:'https://www.legislation.govt.nz/act/public/2007/0091/latest/whole.html'},
+];
+
+let phase='all',aFilter=new Set(),agFilter='',q='';
+
+function renderPh(){
+  document.getElementById('ph-tabs').innerHTML=PH.map(p=>{
+    const a=phase===p.id;
+    return `<button onclick="setP('${p.id}')" style="background:${a?(p.bg||'var(--color-background-secondary)'):'transparent'};color:${a?(p.tc||'var(--color-text-primary)'):'var(--color-text-secondary)'};border:${a?`0.5px solid ${p.bd||'var(--color-border-secondary)'}`:'0.5px solid var(--color-border-tertiary)'};border-radius:var(--border-radius-md);padding:5px 11px;font-size:13px;cursor:pointer;display:flex;align-items:center;gap:5px"><i class="ti ${p.icon}" style="font-size:13px" aria-hidden="true"></i>${p.label}</button>`;
+  }).join('');
+}
+function renderAg(){
+  document.getElementById('ag-pills').innerHTML=AGENCIES.map(a=>{
+    const on=agFilter===a;
+    return `<button onclick="togAg('${a}')" style="background:${on?'var(--color-background-secondary)':'transparent'};color:${on?'var(--color-text-primary)':'var(--color-text-secondary)'};border:${on?'0.5px solid var(--color-border-primary)':'0.5px solid var(--color-border-tertiary)'};border-radius:20px;padding:3px 10px;font-size:12px;cursor:pointer;font-weight:${on?500:400}">${a}</button>`;
+  }).join('');
+  document.getElementById('ag-clear').style.display=agFilter?'inline':'none';
+}
+function renderAc(){
+  document.getElementById('ac-pills').innerHTML=AC.map(a=>{
+    const on=aFilter.has(a);
+    return `<button onclick="togA('${a}')" style="background:${on?'var(--color-background-secondary)':'transparent'};color:${on?'var(--color-text-primary)':'var(--color-text-secondary)'};border:${on?'0.5px solid var(--color-border-primary)':'0.5px solid var(--color-border-tertiary)'};border-radius:20px;padding:3px 10px;font-size:12px;cursor:pointer;font-weight:${on?500:400}">${a}</button>`;
+  }).join('');
+  document.getElementById('ac-clear').style.display=aFilter.size>0?'inline':'none';
+}
+function ok(l){
+  if(phase!=='all'&&!l.phases.includes(phase))return false;
+  if(agFilter&&l.agency!==agFilter)return false;
+  if(aFilter.size>0&&!l.actors.some(a=>aFilter.has(a)))return false;
+  if(q){const t=(l.name+' '+l.year+' '+l.desc+' '+l.provs.join(' ')+' '+l.actors.join(' ')+' '+l.type+' '+l.agency+(l.note||'')).toLowerCase();if(!t.includes(q))return false;}
+  return true;
+}
+function renderCards(){
+  const f=L.filter(ok);
+  document.getElementById('info').textContent=`Showing ${f.length} of ${L.length} instruments`+(agFilter?` · agency: ${agFilter}`:'')+( aFilter.size?` · actor: ${[...aFilter].join(', ')}`:'')+( q?` · "${q}"`:'');
+  const g=document.getElementById('grid');
+  if(!f.length){g.innerHTML=`<div style="grid-column:1/-1;text-align:center;padding:2.5rem;color:var(--color-text-secondary);font-size:14px"><i class="ti ti-search-off" style="font-size:24px;display:block;margin-bottom:8px" aria-hidden="true"></i>No legislation matches these filters.</div>`;return;}
+  g.innerHTML=f.map(l=>{
+    const p0=phMap[l.phases[0]];
+    const sc=p0.sc||'#888780';
+    const tc2=TC[l.type]||TC.Act;
+    const chips=l.phases.map(pid=>{const px=phMap[pid];return px.label?`<span style="background:${px.bg||'var(--color-background-secondary)'};color:${px.tc||'var(--color-text-secondary)'};border-radius:20px;padding:2px 7px;font-size:11px">${px.label}</span>`:''}).join('');
+    const atags=l.actors.slice(0,3).map(a=>`<span style="background:var(--color-background-secondary);color:var(--color-text-secondary);border:0.5px solid var(--color-border-tertiary);border-radius:20px;padding:2px 7px;font-size:11px">${a}</span>`).join('');
+    const amore=l.actors.length>3?`<span style="font-size:11px;color:var(--color-text-tertiary);line-height:1.8">+${l.actors.length-3} more</span>`:'';
+    const noteHtml=l.note?`<div style="background:var(--color-background-warning);border-left:2px solid var(--color-border-warning);border-radius:0;padding:8px 10px;margin-bottom:10px;font-size:12px;color:var(--color-text-warning);line-height:1.6"><i class="ti ti-alert-circle" style="font-size:13px;vertical-align:-2px;margin-right:5px" aria-hidden="true"></i>${l.note}</div>`:'';
+    const flagIcon=l.note?`<i class="ti ti-alert-circle" style="font-size:12px;color:var(--color-text-warning);margin-left:4px;vertical-align:-1px" aria-label="Amendment note" title="Amendment note"></i>`:'';
+    return `<div style="background:var(--color-background-primary);border:0.5px solid var(--color-border-tertiary);border-radius:var(--border-radius-lg);overflow:hidden">
+      <div style="height:3px;background:${sc}"></div>
+      <div style="padding:12px 14px">
+        <div style="display:flex;flex-wrap:wrap;gap:5px;margin-bottom:6px">
+          <span style="background:${tc2.bg};color:${tc2.tc};border-radius:4px;padding:1px 7px;font-size:11px;font-weight:500">${l.type}</span>${chips}
+        </div>
+        <div style="font-size:14px;font-weight:500;color:var(--color-text-primary);margin-bottom:5px;line-height:1.35">${l.name} ${l.year}</div>
+        <div style="display:flex;gap:12px;margin-bottom:7px;flex-wrap:wrap">
+          <span style="font-size:11px;color:var(--color-text-tertiary);display:flex;align-items:center;gap:4px"><i class="ti ti-building" style="font-size:12px" aria-hidden="true"></i>${l.agency}</span>
+          <span style="font-size:11px;color:var(--color-text-tertiary);display:flex;align-items:center;gap:4px"><i class="ti ti-pencil" style="font-size:12px" aria-hidden="true"></i>c. ${l.amended}${flagIcon}</span>
+        </div>
+        <div style="font-size:13px;color:var(--color-text-secondary);line-height:1.5;margin-bottom:9px">${l.desc}</div>
+        <div style="display:flex;flex-wrap:wrap;gap:4px;margin-bottom:9px">${atags}${amore}</div>
+        <div id="pv-${l.id}" style="display:none;border-top:0.5px solid var(--color-border-tertiary);padding-top:10px;margin-bottom:10px">
+          ${noteHtml}
+          <ul style="margin:0 0 10px;padding-left:16px;font-size:13px;color:var(--color-text-secondary);line-height:1.75">${l.provs.map(p=>`<li>${p}</li>`).join('')}</ul>
+          <a href="${l.link}" target="_blank" style="font-size:12px;color:var(--color-text-info);text-decoration:none;display:inline-flex;align-items:center;gap:4px"><i class="ti ti-external-link" style="font-size:13px" aria-hidden="true"></i>legislation.govt.nz</a>
+        </div>
+        <button onclick="togProv(${l.id})" style="font-size:12px;color:var(--color-text-secondary);background:none;border:none;padding:0;cursor:pointer;display:flex;align-items:center;gap:4px">
+          <i class="ti ti-chevron-down" id="ic-${l.id}" style="font-size:14px;transition:transform .2s" aria-hidden="true"></i>Key provisions
+        </button>
+      </div>
+    </div>`;
+  }).join('');
+}
+function setP(id){phase=id;renderPh();renderCards();}
+function togAg(a){agFilter=agFilter===a?'':a;renderAg();renderCards();}
+function clearAgency(){agFilter='';renderAg();renderCards();}
+function togA(a){aFilter.has(a)?aFilter.delete(a):aFilter.add(a);renderAc();renderCards();}
+function clearActors(){aFilter.clear();renderAc();renderCards();}
+function togProv(id){
+  const el=document.getElementById('pv-'+id);
+  const ic=document.getElementById('ic-'+id);
+  const open=el.style.display==='none';
+  el.style.display=open?'block':'none';
+  ic.style.transform=open?'rotate(180deg)':'';
+}
+document.getElementById('srch').addEventListener('input',e=>{q=e.target.value.trim().toLowerCase();renderCards();});
+renderPh();renderAg();renderAc();renderCards();
+</script>

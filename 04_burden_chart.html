@@ -1,0 +1,191 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Death Arc — Legislation Burden Chart by Phase</title>
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:'Georgia',serif;background:#FAFAF8;color:#2C2C2A;font-size:13px}
+.hdr{padding:1.5rem 2rem;border-bottom:1.5px solid #2C2C2A}
+.hdr h1{font-size:1.3rem;font-weight:normal;letter-spacing:-0.01em}
+.hdr p{font-size:0.78rem;color:#5F5E5A;margin-top:0.35rem;line-height:1.6}
+.legend{display:flex;flex-wrap:wrap;gap:0.6rem 1.5rem;padding:0.75rem 2rem;border-bottom:1px solid #D3D1C7;background:#F8F7F4}
+.li{display:flex;align-items:center;gap:6px;font-size:0.75rem;color:#444441}
+.ld{width:12px;height:12px;border-radius:2px;flex-shrink:0}
+.chart-wrap{padding:2rem 2rem 2.5rem}
+.chart{display:flex;flex-direction:column;gap:0}
+.phase-row{display:flex;align-items:stretch;margin-bottom:1.25rem}
+.phase-label{width:130px;min-width:130px;padding-right:1rem;font-size:0.75rem;display:flex;flex-direction:column;justify-content:center;line-height:1.4}
+.phase-label small{font-size:0.68rem;color:#888780;display:block;margin-top:1px}
+.bars-col{flex:1;display:flex;flex-direction:column;gap:3px}
+.bar-row{display:flex;align-items:center;height:28px;gap:0}
+.seg{height:100%;display:flex;align-items:center;justify-content:center;font-size:0.65rem;color:rgba(255,255,255,0.9);font-weight:bold;letter-spacing:0.02em;transition:opacity 0.15s;min-width:4px;position:relative}
+.seg:hover{opacity:0.85}
+.seg-label{white-space:nowrap;overflow:hidden;text-overflow:ellipsis;padding:0 5px}
+.count-label{margin-left:8px;font-size:0.72rem;color:#5F5E5A;white-space:nowrap;display:flex;align-items:center}
+.total-dot{display:inline-block;width:20px;height:20px;border-radius:50%;background:#2C2C2A;color:#FAFAF8;font-size:0.65rem;font-weight:bold;display:inline-flex;align-items:center;justify-content:center;margin-right:4px;flex-shrink:0}
+.x-axis{display:flex;margin-left:130px;margin-top:0.25rem;padding-bottom:0.5rem}
+.x-tick{font-size:0.68rem;color:#888780;flex:1;text-align:center}
+.x-rule{margin-left:130px;height:1px;background:#D3D1C7;margin-bottom:0.25rem}
+.note-row{margin-left:130px;margin-top:0.5rem;font-size:0.72rem;color:#888780;line-height:1.6;font-style:italic}
+.insight{margin:1rem 2rem;padding:0.75rem 1rem;background:#F1EFE8;border-left:3px solid #D85A30;border-radius:0;font-size:0.78rem;line-height:1.65;color:#2C2C2A}
+.ft{font-size:0.7rem;color:#888780;padding:0.75rem 2rem;border-top:1.5px solid #2C2C2A;line-height:1.7}
+
+/* Agency colors */
+.moj{background:#534AB7}
+.ird{background:#3B6D11}
+.moh{background:#993556}
+.mbie{background:#BA7517}
+.dia{background:#1D9E75}
+.msd{background:#0F6E56}
+.te-arawhiti{background:#D85A30}
+.linz{background:#185FA5}
+.worksafe{background:#888780}
+.acc{background:#A32D2D}
+.rbnz{background:#444441}
+</style>
+</head>
+<body>
+<div class="hdr">
+  <h1>Death arc — legislation burden by phase and administering agency</h1>
+  <p>Number of statutes, regulations, and rules active in each phase, stacked by the government agency responsible &nbsp;·&nbsp; Instruments appearing in multiple phases are counted in each &nbsp;·&nbsp; SA4 research reference &nbsp;·&nbsp; N Walbran 2026</p>
+</div>
+<div class="legend">
+  <div class="li"><div class="ld moj"></div>Ministry of Justice</div>
+  <div class="li"><div class="ld ird"></div>Inland Revenue</div>
+  <div class="li"><div class="ld moh"></div>Ministry of Health</div>
+  <div class="li"><div class="ld mbie"></div>MBIE</div>
+  <div class="li"><div class="ld dia"></div>Dept of Internal Affairs</div>
+  <div class="li"><div class="ld msd"></div>Ministry of Social Development</div>
+  <div class="li"><div class="ld te-arawhiti"></div>Te Arawhiti</div>
+  <div class="li"><div class="ld linz"></div>LINZ</div>
+  <div class="li"><div class="ld worksafe"></div>WorkSafe NZ</div>
+  <div class="li"><div class="ld acc"></div>ACC</div>
+  <div class="li"><div class="ld rbnz"></div>Reserve Bank</div>
+</div>
+
+<div class="chart-wrap">
+<div style="margin-left:130px;margin-bottom:4px;font-size:0.68rem;color:#888780;text-transform:uppercase;letter-spacing:0.05em">Number of instruments</div>
+<div class="x-rule"></div>
+
+<div class="chart">
+
+<!-- PRE-DEATH: MoJ:4, IRD:1, MoH:1, Te Arawhiti:1, RBNZ:1 = 8 -->
+<div class="phase-row">
+  <div class="phase-label"><span style="font-weight:bold;font-size:0.78rem">Pre-death</span><small>Wills · EPA · Trusts · Relationships · KiwiSaver · Māori Land</small></div>
+  <div class="bars-col">
+    <div class="bar-row">
+      <div class="seg moj" style="width:calc(4/14*100%)"><span class="seg-label">MoJ 4</span></div>
+      <div class="seg ird" style="width:calc(1/14*100%)"><span class="seg-label">IRD</span></div>
+      <div class="seg moh" style="width:calc(1/14*100%)"><span class="seg-label">MoH</span></div>
+      <div class="seg te-arawhiti" style="width:calc(1/14*100%)"><span class="seg-label">TeA</span></div>
+      <div class="seg rbnz" style="width:calc(1/14*100%)"><span class="seg-label">RB</span></div>
+      <div class="count-label"><span class="total-dot">8</span>instruments</div>
+    </div>
+  </div>
+</div>
+
+<!-- DEATH EVENT: MoJ:2, DIA:1, WorkSafe:1, ACC:1 = 5 -->
+<div class="phase-row">
+  <div class="phase-label"><span style="font-weight:bold;font-size:0.78rem">Death event</span><small>Registration · Coroner · WorkSafe · ACC · Crimes</small></div>
+  <div class="bars-col">
+    <div class="bar-row">
+      <div class="seg moj" style="width:calc(2/14*100%)"><span class="seg-label">MoJ 2</span></div>
+      <div class="seg dia" style="width:calc(1/14*100%)"><span class="seg-label">DIA</span></div>
+      <div class="seg worksafe" style="width:calc(1/14*100%)"><span class="seg-label">WS</span></div>
+      <div class="seg acc" style="width:calc(1/14*100%)"><span class="seg-label">ACC</span></div>
+      <div class="count-label"><span class="total-dot">5</span>instruments</div>
+    </div>
+  </div>
+</div>
+
+<!-- BODY & FUNERAL: MoJ:1, DIA:1, MoH:3, MBIE:1 = 6 -->
+<div class="phase-row">
+  <div class="phase-label"><span style="font-weight:bold;font-size:0.78rem">Body &amp; funeral</span><small>BDMRR · Coroners · Burial &amp; Cremation · Health Act · CGA</small></div>
+  <div class="bars-col">
+    <div class="bar-row">
+      <div class="seg moj" style="width:calc(1/14*100%)"><span class="seg-label">MoJ</span></div>
+      <div class="seg dia" style="width:calc(1/14*100%)"><span class="seg-label">DIA</span></div>
+      <div class="seg moh" style="width:calc(3/14*100%)"><span class="seg-label">MoH 3</span></div>
+      <div class="seg mbie" style="width:calc(1/14*100%)"><span class="seg-label">MBIE</span></div>
+      <div class="count-label"><span class="total-dot">6</span>instruments</div>
+    </div>
+  </div>
+</div>
+
+<!-- ESTATE ADMIN: MoJ:7, MBIE:2, Te Arawhiti:1, LINZ:1, ACC:1 = 12 -->
+<div class="phase-row">
+  <div class="phase-label"><span style="font-weight:bold;font-size:0.78rem">Estate admin</span><small>Probate · Trusts · Limitation · Insolvency · Companies · Land Transfer</small></div>
+  <div class="bars-col">
+    <div class="bar-row">
+      <div class="seg moj" style="width:calc(7/14*100%)"><span class="seg-label">Ministry of Justice 7</span></div>
+      <div class="seg mbie" style="width:calc(2/14*100%)"><span class="seg-label">MBIE 2</span></div>
+      <div class="seg te-arawhiti" style="width:calc(1/14*100%)"><span class="seg-label">TeA</span></div>
+      <div class="seg linz" style="width:calc(1/14*100%)"><span class="seg-label">LNZ</span></div>
+      <div class="seg acc" style="width:calc(1/14*100%)"><span class="seg-label">ACC</span></div>
+      <div class="count-label"><span class="total-dot" style="background:#D85A30">12</span>instruments <span style="color:#D85A30;margin-left:4px;font-size:0.68rem">peak</span></div>
+    </div>
+  </div>
+</div>
+
+<!-- SUCCESSION: MoJ:5, IRD:1, MSD:2, DIA:1, MBIE:1, Te Arawhiti:1, ACC:1, RBNZ:1 = 13 -->
+<div class="phase-row">
+  <div class="phase-label"><span style="font-weight:bold;font-size:0.78rem">Succession</span><small>FPA · Testamentary Promises · Property Relationships · Social Security · Charities</small></div>
+  <div class="bars-col">
+    <div class="bar-row">
+      <div class="seg moj" style="width:calc(5/14*100%)"><span class="seg-label">Ministry of Justice 5</span></div>
+      <div class="seg msd" style="width:calc(2/14*100%)"><span class="seg-label">MSD 2</span></div>
+      <div class="seg ird" style="width:calc(1/14*100%)"><span class="seg-label">IRD</span></div>
+      <div class="seg dia" style="width:calc(1/14*100%)"><span class="seg-label">DIA</span></div>
+      <div class="seg te-arawhiti" style="width:calc(1/14*100%)"><span class="seg-label">TeA</span></div>
+      <div class="seg mbie" style="width:calc(1/14*100%)"><span class="seg-label">MBIE</span></div>
+      <div class="seg acc" style="width:calc(1/14*100%)"><span class="seg-label">ACC</span></div>
+      <div class="seg rbnz" style="width:calc(1/14*100%)"><span class="seg-label">RB</span></div>
+      <div class="count-label"><span class="total-dot" style="background:#D85A30">13</span>instruments <span style="color:#D85A30;margin-left:4px;font-size:0.68rem">peak</span></div>
+    </div>
+  </div>
+</div>
+
+<!-- CLOSING: MoJ:3, IRD:3, MSD:1, MBIE:1, Te Arawhiti:1, LINZ:1 = 10 -->
+<div class="phase-row">
+  <div class="phase-label"><span style="font-weight:bold;font-size:0.78rem">Closing estate</span><small>Income Tax · Tax Admin · GST · NZ Super · Employment · Land Transfer</small></div>
+  <div class="bars-col">
+    <div class="bar-row">
+      <div class="seg moj" style="width:calc(3/14*100%)"><span class="seg-label">MoJ 3</span></div>
+      <div class="seg ird" style="width:calc(3/14*100%)"><span class="seg-label">IRD 3</span></div>
+      <div class="seg msd" style="width:calc(1/14*100%)"><span class="seg-label">MSD</span></div>
+      <div class="seg mbie" style="width:calc(1/14*100%)"><span class="seg-label">MBIE</span></div>
+      <div class="seg te-arawhiti" style="width:calc(1/14*100%)"><span class="seg-label">TeA</span></div>
+      <div class="seg linz" style="width:calc(1/14*100%)"><span class="seg-label">LNZ</span></div>
+      <div class="count-label"><span class="total-dot">10</span>instruments</div>
+    </div>
+  </div>
+</div>
+
+</div><!-- end chart -->
+
+<div class="x-rule" style="margin-top:0.5rem"></div>
+<div class="x-axis">
+  <div class="x-tick">0</div>
+  <div class="x-tick">2</div>
+  <div class="x-tick">4</div>
+  <div class="x-tick">6</div>
+  <div class="x-tick">8</div>
+  <div class="x-tick">10</div>
+  <div class="x-tick">12</div>
+  <div class="x-tick">14</div>
+</div>
+<div class="note-row">Instruments counted per phase in which they are active. Some instruments (e.g. ACC Act, Te Ture Whenua Māori Act, Trusts Act) span multiple phases and are counted in each.</div>
+
+</div><!-- end chart-wrap -->
+
+<div class="insight">
+  <strong>What this shows:</strong> The burden peaks at estate administration and succession — the two phases when whānau are simultaneously grieving and managing the most complex legal requirements, across the most government agencies. Ministry of Justice instruments dominate throughout, but IRD, MSD, Te Arawhiti, and LINZ each add distinct institutional touchpoints that families must navigate separately. There is no single agency through which the whole can be managed.
+</div>
+
+<div class="ft">
+  SA4 Research — Nerine Walbran 2026 &nbsp;·&nbsp; Instrument counts derived from the 36-instrument NZ death arc legislation reference (Claude/AI-assisted synthesis, May 2026). An instrument appearing in n phases is counted n times. This chart is a research artefact and does not constitute legal advice.
+</div>
+</body>
+</html>

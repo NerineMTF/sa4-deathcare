@@ -1,0 +1,298 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Death Arc — Swimlane Journey Map</title>
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:'Georgia',serif;background:#FAFAF8;color:#2C2C2A;font-size:13px}
+.hdr{padding:1.5rem 2rem;border-bottom:1.5px solid #2C2C2A}
+.hdr h1{font-size:1.3rem;font-weight:normal;letter-spacing:-0.01em}
+.hdr p{font-size:0.78rem;color:#5F5E5A;margin-top:0.35rem;line-height:1.6}
+.legend{display:flex;flex-wrap:wrap;gap:1rem 2rem;padding:0.75rem 2rem;border-bottom:1px solid #D3D1C7;background:#F8F7F4}
+.li{display:flex;align-items:center;gap:6px;font-size:0.75rem;color:#444441}
+.ld{width:12px;height:12px;border-radius:2px;flex-shrink:0}
+.wrap{overflow-x:auto;-webkit-overflow-scrolling:touch}
+table{border-collapse:collapse;min-width:900px;width:100%}
+.ph{text-align:center;font-size:0.68rem;font-weight:normal;letter-spacing:0.06em;text-transform:uppercase;padding:0.5rem 0.75rem;border-right:1px solid rgba(0,0,0,0.1);white-space:nowrap}
+.an{font-size:0.75rem;font-weight:bold;padding:0.75rem 0.85rem;border-right:2px solid #B4B2A9;border-bottom:1px solid #D3D1C7;vertical-align:top;background:#F1EFE8;min-width:120px;white-space:nowrap;line-height:1.5}
+.an small{display:block;font-weight:normal;font-size:0.68rem;color:#888780;margin-top:2px}
+.tc{vertical-align:top;padding:0.5rem;border-right:1px solid #D3D1C7;border-bottom:1px solid #D3D1C7;min-width:155px}
+.t{border-radius:3px;padding:3px 7px;margin-bottom:3px;line-height:1.45;display:flex;align-items:flex-start;gap:5px;font-size:0.72rem}
+.t:last-child{margin-bottom:0}
+.dot{min-width:5px;height:5px;border-radius:50%;margin-top:5px;flex-shrink:0}
+.nil{color:#C8C6BE;font-size:0.7rem;padding:4px}
+.ft{font-size:0.7rem;color:#888780;padding:0.75rem 2rem;border-top:1.5px solid #2C2C2A;margin-top:0;line-height:1.7}
+.heavy{background:#FFF3EF;position:relative}
+.heavy::after{content:'invisible work concentration';position:absolute;top:4px;right:4px;font-size:0.6rem;color:#D85A30;letter-spacing:0.04em;text-transform:uppercase;opacity:0.7}
+</style>
+</head>
+<body>
+<div class="hdr">
+  <h1>Death arc — swimlane journey map</h1>
+  <p>Tasks across phases mapped by actor &nbsp;·&nbsp; Invisible work frame: Daniels (1987); articulation work: Star &amp; Strauss (1999) &nbsp;·&nbsp; SA4 research reference &nbsp;·&nbsp; N Walbran 2026</p>
+</div>
+<div class="legend">
+  <div class="li"><div class="ld" style="background:#D85A30"></div>Whānau / family</div>
+  <div class="li"><div class="ld" style="background:#BA7517"></div>Executor / administrator</div>
+  <div class="li"><div class="ld" style="background:#5F5E5A"></div>Funeral director</div>
+  <div class="li"><div class="ld" style="background:#993556"></div>Medical / coroner / police</div>
+  <div class="li"><div class="ld" style="background:#1D9E75"></div>DIA / Registrar-General</div>
+  <div class="li"><div class="ld" style="background:#534AB7"></div>Courts</div>
+  <div class="li"><div class="ld" style="background:#3B6D11"></div>IRD</div>
+  <div class="li"><div class="ld" style="background:#888780"></div>Banks / insurers / KiwiSaver</div>
+  <div class="li"><div class="ld" style="background:#0F6E56"></div>Other agencies (ACC · WINZ · LINZ · WorkSafe)</div>
+</div>
+<div class="wrap">
+<table>
+<thead>
+<tr>
+  <th style="background:#F1EFE8;border-right:2px solid #B4B2A9;border-bottom:1.5px solid #2C2C2A;min-width:120px;padding:0.5rem 0.85rem;font-size:0.68rem;font-weight:normal;letter-spacing:0.06em;text-transform:uppercase;text-align:left">Actor</th>
+  <th class="ph" style="background:#E6F1FB;color:#0C447C;border-bottom:1.5px solid #2C2C2A">Pre-death</th>
+  <th class="ph" style="background:#FCEBEB;color:#791F1F;border-bottom:1.5px solid #2C2C2A">Death event</th>
+  <th class="ph" style="background:#F1EFE8;color:#444441;border-bottom:1.5px solid #2C2C2A">Body &amp; funeral</th>
+  <th class="ph" style="background:#FAEEDA;color:#633806;border-bottom:1.5px solid #2C2C2A">Estate admin</th>
+  <th class="ph" style="background:#EAF3DE;color:#27500A;border-bottom:1.5px solid #2C2C2A">Succession</th>
+  <th class="ph" style="background:#E1F5EE;color:#085041;border-bottom:1.5px solid #2C2C2A">Closing estate</th>
+</tr>
+</thead>
+<tbody>
+<!-- WHANAU -->
+<tr>
+<td class="an" style="border-left:3px solid #D85A30">Whānau<small>family</small></td>
+<td class="tc" style="background:#FFF8F6">
+  <div class="t"><div class="dot" style="background:#D85A30"></div>Discuss end-of-life wishes with dying person</div>
+  <div class="t"><div class="dot" style="background:#D85A30"></div>Encourage will and EPA to be made</div>
+  <div class="t"><div class="dot" style="background:#D85A30"></div>Know location of key documents</div>
+  <div class="t"><div class="dot" style="background:#D85A30"></div>Consider pre-paid funeral arrangements</div>
+</td>
+<td class="tc" style="background:#FFF8F6">
+  <div class="t"><div class="dot" style="background:#D85A30"></div>Receive and share news of death</div>
+  <div class="t"><div class="dot" style="background:#D85A30"></div>Contact funeral director</div>
+  <div class="t"><div class="dot" style="background:#D85A30"></div>Make immediate tikanga / cultural decisions</div>
+  <div class="t"><div class="dot" style="background:#D85A30"></div>Support each other through acute grief</div>
+  <div class="t"><div class="dot" style="background:#D85A30"></div>Identify and locate the executor</div>
+</td>
+<td class="tc" style="background:#FFF8F6">
+  <div class="t"><div class="dot" style="background:#D85A30"></div>Plan and hold tangi / funeral service</div>
+  <div class="t"><div class="dot" style="background:#D85A30"></div>Make burial vs cremation decision</div>
+  <div class="t"><div class="dot" style="background:#D85A30"></div>Obtain multiple death certificate copies</div>
+  <div class="t"><div class="dot" style="background:#D85A30"></div>Continue grief support within whānau</div>
+  <div class="t"><div class="dot" style="background:#D85A30"></div>Care for bereaved children</div>
+</td>
+<td class="tc" style="background:#FFF8F6">
+  <div class="t"><div class="dot" style="background:#D85A30"></div>Support executor — gather documents</div>
+  <div class="t"><div class="dot" style="background:#D85A30"></div>Locate assets, policies, accounts</div>
+  <div class="t"><div class="dot" style="background:#D85A30"></div>Manage family expectations and conflict</div>
+  <div class="t"><div class="dot" style="background:#D85A30"></div>Clear and manage deceased's property</div>
+  <div class="t"><div class="dot" style="background:#D85A30"></div>Navigate Māori land succession (if applicable)</div>
+</td>
+<td class="tc" style="background:#FFF8F6">
+  <div class="t"><div class="dot" style="background:#D85A30"></div>Await distribution from estate</div>
+  <div class="t"><div class="dot" style="background:#D85A30"></div>Assess whether FPA claim is warranted</div>
+  <div class="t"><div class="dot" style="background:#D85A30"></div>Apply for survivor benefits (WINZ / ACC)</div>
+  <div class="t"><div class="dot" style="background:#D85A30"></div>Adjust to changed financial circumstances</div>
+  <div class="t"><div class="dot" style="background:#D85A30"></div>Manage ongoing grief and adjustment</div>
+</td>
+<td class="tc" style="background:#FFF8F6">
+  <div class="t"><div class="dot" style="background:#D85A30"></div>Receive final distribution</div>
+  <div class="t"><div class="dot" style="background:#D85A30"></div>Receive land title transfer</div>
+  <div class="t"><div class="dot" style="background:#D85A30"></div>Long-term grief and life adjustment</div>
+</td>
+</tr>
+<!-- EXECUTOR -->
+<tr>
+<td class="an" style="border-left:3px solid #BA7517">Executor /<br>administrator<small>invisible work hub</small></td>
+<td class="tc heavy" style="background:#FFFAF2">
+  <div class="t"><div class="dot" style="background:#BA7517"></div>Accept appointment as executor in will</div>
+  <div class="t"><div class="dot" style="background:#BA7517"></div>Understand role and duties (ideally before death)</div>
+</td>
+<td class="tc heavy" style="background:#FFFAF2">
+  <div class="t"><div class="dot" style="background:#BA7517"></div>Assume coordinator role across all actors</div>
+  <div class="t"><div class="dot" style="background:#BA7517"></div>Locate will and key documents</div>
+  <div class="t"><div class="dot" style="background:#BA7517"></div>Begin notification of contacts</div>
+</td>
+<td class="tc heavy" style="background:#FFFAF2">
+  <div class="t"><div class="dot" style="background:#BA7517"></div>Secure assets and property immediately</div>
+  <div class="t"><div class="dot" style="background:#BA7517"></div>Notify banks — request account freeze</div>
+  <div class="t"><div class="dot" style="background:#BA7517"></div>Order multiple certified death certificates</div>
+  <div class="t"><div class="dot" style="background:#BA7517"></div>Cancel subscriptions; notify employer</div>
+  <div class="t"><div class="dot" style="background:#BA7517"></div>Pay funeral costs from estate funds</div>
+</td>
+<td class="tc heavy" style="background:#FFFAF2">
+  <div class="t"><div class="dot" style="background:#BA7517"></div>Prepare inventory of all estate assets</div>
+  <div class="t"><div class="dot" style="background:#BA7517"></div>Apply for probate or letters of administration</div>
+  <div class="t"><div class="dot" style="background:#BA7517"></div>Advertise for creditors (6-week period)</div>
+  <div class="t"><div class="dot" style="background:#BA7517"></div>Notify IRD — obtain estate IRD number</div>
+  <div class="t"><div class="dot" style="background:#BA7517"></div>Collect assets: accounts, shares, KiwiSaver</div>
+  <div class="t"><div class="dot" style="background:#BA7517"></div>Pay debts in statutory priority order</div>
+  <div class="t"><div class="dot" style="background:#BA7517"></div>Notify WINZ / MSD — stop NZ Super</div>
+  <div class="t"><div class="dot" style="background:#BA7517"></div>Instruct lawyer for Māori Land Court (if applicable)</div>
+</td>
+<td class="tc heavy" style="background:#FFFAF2">
+  <div class="t"><div class="dot" style="background:#BA7517"></div>Distribute assets to beneficiaries</div>
+  <div class="t"><div class="dot" style="background:#BA7517"></div>Respond to FPA / testamentary promises claims</div>
+  <div class="t"><div class="dot" style="background:#BA7517"></div>Manage relationship property election by spouse</div>
+  <div class="t"><div class="dot" style="background:#BA7517"></div>Pay any court-ordered family provision</div>
+</td>
+<td class="tc heavy" style="background:#FFFAF2">
+  <div class="t"><div class="dot" style="background:#BA7517"></div>File final IR3 (deceased's last income tax return)</div>
+  <div class="t"><div class="dot" style="background:#BA7517"></div>File estate IR6 returns each year of admin</div>
+  <div class="t"><div class="dot" style="background:#BA7517"></div>Deregister GST if deceased was registered</div>
+  <div class="t"><div class="dot" style="background:#BA7517"></div>Register land transmission at LINZ</div>
+  <div class="t"><div class="dot" style="background:#BA7517"></div>Transfer shares to beneficiaries</div>
+  <div class="t"><div class="dot" style="background:#BA7517"></div>Obtain IRD tax clearance before final distribution</div>
+  <div class="t"><div class="dot" style="background:#BA7517"></div>Pass accounts and close administration</div>
+</td>
+</tr>
+<!-- FUNERAL DIRECTOR -->
+<tr>
+<td class="an" style="border-left:3px solid #5F5E5A">Funeral<br>director</td>
+<td class="tc">
+  <div class="t"><div class="dot" style="background:#5F5E5A"></div>Offer pre-paid funeral plans</div>
+  <div class="t"><div class="dot" style="background:#5F5E5A"></div>Provide general information to public</div>
+</td>
+<td class="tc">
+  <div class="t"><div class="dot" style="background:#5F5E5A"></div>Receive call from whānau or hospital</div>
+  <div class="t"><div class="dot" style="background:#5F5E5A"></div>Transfer and receive body</div>
+  <div class="t"><div class="dot" style="background:#5F5E5A"></div>Initial documentation and identification</div>
+</td>
+<td class="tc">
+  <div class="t"><div class="dot" style="background:#5F5E5A"></div>Prepare body (embalming, dressing, presentation)</div>
+  <div class="t"><div class="dot" style="background:#5F5E5A"></div>Obtain and coordinate cremation certificates (Forms 1 &amp; 2)</div>
+  <div class="t"><div class="dot" style="background:#5F5E5A"></div>Apply for burial/cremation permit from DIA</div>
+  <div class="t"><div class="dot" style="background:#5F5E5A"></div>Arrange and support service and logistics</div>
+  <div class="t"><div class="dot" style="background:#5F5E5A"></div>Conduct burial or cremation</div>
+  <div class="t"><div class="dot" style="background:#5F5E5A"></div>Return ashes or arrange burial plot</div>
+</td>
+<td class="tc">
+  <div class="t"><div class="dot" style="background:#5F5E5A"></div>Submit invoice to estate</div>
+</td>
+<td class="tc"><div class="nil">—</div></td>
+<td class="tc"><div class="nil">—</div></td>
+</tr>
+<!-- MEDICAL / CORONER -->
+<tr>
+<td class="an" style="border-left:3px solid #993556">Medical /<br>coroner /<br>police</td>
+<td class="tc"><div class="nil">Palliative care; advance directive support</div></td>
+<td class="tc">
+  <div class="t"><div class="dot" style="background:#993556"></div>Medical practitioner certifies cause of death</div>
+  <div class="t"><div class="dot" style="background:#993556"></div>Refer to coroner if unexplained / workplace / sudden</div>
+  <div class="t"><div class="dot" style="background:#993556"></div>Police notify coroner of reportable deaths</div>
+  <div class="t"><div class="dot" style="background:#993556"></div>Coroner investigates; may order post-mortem</div>
+</td>
+<td class="tc">
+  <div class="t"><div class="dot" style="background:#993556"></div>Issue medical certificate of cause of death</div>
+  <div class="t"><div class="dot" style="background:#993556"></div>Coroner: issue findings certificate; release body</div>
+  <div class="t"><div class="dot" style="background:#993556"></div>Medical referee: approve cremation certificates</div>
+</td>
+<td class="tc"><div class="nil">—</div></td>
+<td class="tc"><div class="nil">—</div></td>
+<td class="tc"><div class="nil">—</div></td>
+</tr>
+<!-- DIA -->
+<tr>
+<td class="an" style="border-left:3px solid #1D9E75">DIA /<br>Registrar-<br>General</td>
+<td class="tc"><div class="nil">—</div></td>
+<td class="tc"><div class="nil">—</div></td>
+<td class="tc">
+  <div class="t"><div class="dot" style="background:#1D9E75"></div>Receive death registration from informant</div>
+  <div class="t"><div class="dot" style="background:#1D9E75"></div>Register death in national register</div>
+  <div class="t"><div class="dot" style="background:#1D9E75"></div>Issue death certificate (multiple copies)</div>
+  <div class="t"><div class="dot" style="background:#1D9E75"></div>Issue burial/cremation permit</div>
+</td>
+<td class="tc"><div class="nil">—</div></td>
+<td class="tc"><div class="nil">—</div></td>
+<td class="tc"><div class="nil">—</div></td>
+</tr>
+<!-- COURTS -->
+<tr>
+<td class="an" style="border-left:3px solid #534AB7">Courts<small>High Court · Family Court · Māori Land Court</small></td>
+<td class="tc"><div class="nil">—</div></td>
+<td class="tc"><div class="nil">—</div></td>
+<td class="tc"><div class="nil">—</div></td>
+<td class="tc">
+  <div class="t"><div class="dot" style="background:#534AB7"></div>Receive and process probate application</div>
+  <div class="t"><div class="dot" style="background:#534AB7"></div>Grant probate or letters of administration</div>
+  <div class="t"><div class="dot" style="background:#534AB7"></div>Māori Land Court: make succession orders for Māori freehold land</div>
+</td>
+<td class="tc">
+  <div class="t"><div class="dot" style="background:#534AB7"></div>Hear FPA and testamentary promises claims</div>
+  <div class="t"><div class="dot" style="background:#534AB7"></div>Make orders on relationship property elections</div>
+</td>
+<td class="tc"><div class="nil">—</div></td>
+</tr>
+<!-- IRD -->
+<tr>
+<td class="an" style="border-left:3px solid #3B6D11">Inland<br>Revenue</td>
+<td class="tc"><div class="nil">—</div></td>
+<td class="tc"><div class="nil">—</div></td>
+<td class="tc"><div class="nil">—</div></td>
+<td class="tc">
+  <div class="t"><div class="dot" style="background:#3B6D11"></div>Receive death notification from executor</div>
+  <div class="t"><div class="dot" style="background:#3B6D11"></div>Issue new IRD number for the estate</div>
+  <div class="t"><div class="dot" style="background:#3B6D11"></div>Receive KiwiSaver closure notification</div>
+</td>
+<td class="tc"><div class="nil">—</div></td>
+<td class="tc">
+  <div class="t"><div class="dot" style="background:#3B6D11"></div>Process final IR3 (deceased)</div>
+  <div class="t"><div class="dot" style="background:#3B6D11"></div>Process estate IR6 returns</div>
+  <div class="t"><div class="dot" style="background:#3B6D11"></div>Process GST deregistration if applicable</div>
+  <div class="t"><div class="dot" style="background:#3B6D11"></div>Issue tax clearance to executor</div>
+</td>
+</tr>
+<!-- BANKS -->
+<tr>
+<td class="an" style="border-left:3px solid #888780">Banks /<br>insurers /<br>KiwiSaver</td>
+<td class="tc">
+  <div class="t"><div class="dot" style="background:#888780"></div>Hold accounts and policies</div>
+  <div class="t"><div class="dot" style="background:#888780"></div>Receive and record beneficiary nominations</div>
+</td>
+<td class="tc"><div class="nil">—</div></td>
+<td class="tc">
+  <div class="t"><div class="dot" style="background:#888780"></div>Receive death notification from executor</div>
+  <div class="t"><div class="dot" style="background:#888780"></div>Freeze accounts pending grant of probate</div>
+</td>
+<td class="tc">
+  <div class="t"><div class="dot" style="background:#888780"></div>Release accounts on sighting probate grant</div>
+  <div class="t"><div class="dot" style="background:#888780"></div>Pay life insurance to estate or named beneficiary</div>
+</td>
+<td class="tc">
+  <div class="t"><div class="dot" style="background:#888780"></div>Release KiwiSaver balance to estate or nominee</div>
+  <div class="t"><div class="dot" style="background:#888780"></div>Close all deceased's accounts</div>
+</td>
+<td class="tc"><div class="nil">—</div></td>
+</tr>
+<!-- OTHER AGENCIES -->
+<tr>
+<td class="an" style="border-left:3px solid #0F6E56">Other agencies<small>ACC · WINZ · LINZ<br>WorkSafe · Te Arawhiti</small></td>
+<td class="tc"><div class="nil">—</div></td>
+<td class="tc">
+  <div class="t"><div class="dot" style="background:#0F6E56"></div>WorkSafe: receive notification of workplace death</div>
+  <div class="t"><div class="dot" style="background:#0F6E56"></div>WorkSafe: preserve scene and investigate</div>
+  <div class="t"><div class="dot" style="background:#0F6E56"></div>ACC: receive and assess fatal injury claim</div>
+</td>
+<td class="tc"><div class="nil">—</div></td>
+<td class="tc">
+  <div class="t"><div class="dot" style="background:#0F6E56"></div>WINZ/MSD: stop NZ Super; calculate overpayment</div>
+  <div class="t"><div class="dot" style="background:#0F6E56"></div>LINZ: receive land transmission application</div>
+  <div class="t"><div class="dot" style="background:#0F6E56"></div>Te Arawhiti / Māori Trustee: advise on Māori land</div>
+</td>
+<td class="tc">
+  <div class="t"><div class="dot" style="background:#0F6E56"></div>WINZ: assess survivor allowance and orphan's benefit</div>
+  <div class="t"><div class="dot" style="background:#0F6E56"></div>ACC: pay fatal injury lump sum and weekly compensation</div>
+  <div class="t"><div class="dot" style="background:#0F6E56"></div>WINZ: recover overpaid benefits from estate</div>
+</td>
+<td class="tc">
+  <div class="t"><div class="dot" style="background:#0F6E56"></div>LINZ: register land transfers to beneficiaries</div>
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="ft">
+  Invisible work frame: Daniels, A.K. (1987). Invisible Work. <em>Social Problems</em>, 34(5), 403–415. &nbsp;·&nbsp; Articulation work: Star, S.L. &amp; Strauss, A. (1999). <em>Computer Supported Cooperative Work</em>, 8(1–2), 9–30. &nbsp;·&nbsp; This map is a research artefact and does not constitute legal advice. Produced with AI assistance — verify before citing.
+</div>
+</body>
+</html>

@@ -1,0 +1,196 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Death Arc — Document-Gated Dependency Map</title>
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:'Georgia',serif;background:#FAFAF8;color:#2C2C2A;font-size:13px}
+.hdr{padding:1.5rem 2rem;border-bottom:1.5px solid #2C2C2A}
+.hdr h1{font-size:1.3rem;font-weight:normal;letter-spacing:-0.01em}
+.hdr p{font-size:0.78rem;color:#5F5E5A;margin-top:0.35rem;line-height:1.6}
+.legend{display:flex;flex-wrap:wrap;gap:0.75rem 2rem;padding:0.75rem 2rem;border-bottom:1px solid #D3D1C7;background:#F8F7F4}
+.li{display:flex;align-items:center;gap:7px;font-size:0.75rem;color:#444441}
+.main{padding:2rem;max-width:900px;margin:0 auto}
+.gate{margin-bottom:2rem;position:relative}
+.gate-doc{background:#fff;border:1.5px solid #2C2C2A;border-radius:4px;padding:0.6rem 1rem;display:inline-flex;align-items:center;gap:8px;font-size:0.78rem;font-weight:bold;letter-spacing:0.01em}
+.gate-doc.coroner{border-color:#993556;background:#FBF0F4}
+.gate-doc.dia{border-color:#1D9E75;background:#EAF9F3}
+.gate-doc.probate{border-color:#534AB7;background:#EEEDFE}
+.gate-doc.ird{border-color:#3B6D11;background:#EFF6E4}
+.doc-icon{width:16px;height:20px;border:1.5px solid currentColor;border-radius:1px;position:relative;display:flex;align-items:center;justify-content:center;font-size:9px;flex-shrink:0}
+.or-split{display:flex;align-items:center;gap:0.5rem;margin:0.4rem 0 0.4rem 0.5rem}
+.or-label{font-size:0.68rem;text-transform:uppercase;letter-spacing:0.06em;color:#888780;background:#F1EFE8;border:1px solid #D3D1C7;border-radius:3px;padding:1px 6px}
+.arrow-down{display:flex;flex-direction:column;align-items:flex-start;margin:0.3rem 0 0.3rem 1.5rem;gap:0}
+.arrow-line{width:2px;height:20px;background:#B4B2A9;margin-left:10px}
+.arrow-head{width:0;height:0;border-left:5px solid transparent;border-right:5px solid transparent;border-top:7px solid #B4B2A9;margin-left:7px}
+.unlocks{margin-left:1.5rem;margin-top:0.25rem}
+.unlocks-label{font-size:0.68rem;text-transform:uppercase;letter-spacing:0.06em;color:#888780;margin-bottom:0.4rem;margin-left:2px}
+.unlock-grid{display:flex;flex-wrap:wrap;gap:0.4rem;margin-bottom:0.25rem}
+.task-node{border-radius:20px;padding:3px 10px;font-size:0.72rem;display:inline-flex;align-items:center;gap:5px;border:1px solid}
+.task-node.funeral{background:#F1EFE8;border-color:#B4B2A9;color:#444441}
+.task-node.bank{background:#E6F1FB;border-color:#85B7EB;color:#0C447C}
+.task-node.legal{background:#EEEDFE;border-color:#AFA9EC;color:#3C3489}
+.task-node.tax{background:#EFF6E4;border-color:#97C459;color:#27500A}
+.task-node.land{background:#FAEEDA;border-color:#EF9F27;color:#633806}
+.task-node.social{background:#E1F5EE;border-color:#5DCAA5;color:#085041}
+.task-node.acc{background:#FCEBEB;border-color:#F09595;color:#791F1F}
+.gate-section{border-left:3px solid #D3D1C7;padding-left:1rem;margin-left:0.5rem}
+.phase-label{font-size:0.68rem;text-transform:uppercase;letter-spacing:0.07em;color:#888780;font-style:italic;margin-bottom:0.5rem}
+.sub-arrow{display:flex;align-items:center;gap:6px;margin:0.2rem 0;padding-left:0.5rem;font-size:0.72rem;color:#5F5E5A}
+.sub-arrow::before{content:'→';color:#B4B2A9;font-size:0.9rem}
+.note-box{background:#FFF8EE;border:1px solid #EF9F27;border-radius:4px;padding:0.5rem 0.75rem;font-size:0.72rem;color:#633806;margin:0.35rem 0 0.35rem 1.5rem;line-height:1.5}
+.parallel-badge{font-size:0.65rem;text-transform:uppercase;letter-spacing:0.05em;color:#fff;background:#888780;border-radius:3px;padding:1px 5px;margin-left:6px;vertical-align:middle}
+.critical{border-color:#D85A30!important;background:#FFF3EF!important}
+.critical-label{font-size:0.65rem;text-transform:uppercase;letter-spacing:0.05em;color:#D85A30;margin-left:8px}
+.ft{font-size:0.7rem;color:#888780;padding:0.75rem 2rem;border-top:1.5px solid #2C2C2A;line-height:1.7}
+</style>
+</head>
+<body>
+<div class="hdr">
+  <h1>Death arc — document-gated dependency map</h1>
+  <p>Which tasks cannot begin until a document is produced &nbsp;·&nbsp; Gate documents shown in bordered boxes &nbsp;·&nbsp; SA4 research reference &nbsp;·&nbsp; N Walbran 2026</p>
+</div>
+<div class="legend">
+  <div class="li"><span style="display:inline-block;width:14px;height:14px;border:1.5px solid #2C2C2A;border-radius:2px;background:#fff"></span>Gate document (must exist before next step)</div>
+  <div class="li"><span style="display:inline-block;width:14px;height:14px;border-radius:20px;background:#E6F1FB;border:1px solid #85B7EB"></span>Task unlocked by that document</div>
+  <div class="li"><span style="display:inline-block;width:28px;height:2px;background:#D85A30;border-radius:2px"></span>Critical path — most tasks blocked by this gate</div>
+</div>
+
+<div class="main">
+
+<!-- GATE 1 -->
+<div class="gate">
+  <div class="phase-label">Death event</div>
+  <div style="display:flex;align-items:center;flex-wrap:wrap;gap:0.5rem">
+    <div class="gate-doc coroner" style="border-color:#993556;background:#FBF0F4"><div class="doc-icon" style="color:#993556">✦</div>Medical certificate of cause of death</div>
+    <div class="or-label">or</div>
+    <div class="gate-doc coroner" style="border-color:#993556;background:#FBF0F4"><div class="doc-icon" style="color:#993556">✦</div>Coroner's findings certificate <span style="font-weight:normal;font-size:0.68rem;color:#888780;margin-left:4px">(reportable deaths)</span></div>
+  </div>
+  <div class="note-box">Required before death can be registered. Coronial process may take days to months — body cannot be released until coroner formally does so. This is the first gate and the one most likely to be invisible to unprepared whānau.</div>
+  <div class="arrow-down"><div class="arrow-line"></div><div class="arrow-head"></div></div>
+
+  <!-- GATE 2 -->
+  <div class="gate-section">
+    <div class="gate-doc dia"><div class="doc-icon" style="color:#1D9E75">✦</div>Death registration (DIA)</div>
+    <div class="arrow-down"><div class="arrow-line"></div><div class="arrow-head"></div></div>
+    <div style="display:flex;flex-wrap:wrap;gap:0.4rem;margin-bottom:0.75rem">
+      <div class="gate-doc dia" style="border-color:#1D9E75"><div class="doc-icon" style="color:#1D9E75">✦</div>Death certificate <span style="font-weight:normal;font-size:0.7rem;margin-left:4px">(multiple copies needed)</span><span class="critical-label">master gate</span></div>
+      <div class="gate-doc" style="border-color:#5F5E5A"><div class="doc-icon" style="color:#5F5E5A">✦</div>Burial / cremation permit</div>
+    </div>
+
+    <!-- From burial permit -->
+    <div class="gate-section" style="border-color:#B4B2A9;margin-bottom:1rem">
+      <div style="font-size:0.72rem;color:#5F5E5A;margin-bottom:0.35rem;font-style:italic">Burial/cremation permit unlocks:</div>
+      <div class="unlock-grid">
+        <div class="task-node funeral">Body can be buried or cremated</div>
+      </div>
+      <div class="note-box" style="border-color:#B4B2A9;background:#F8F7F4;color:#5F5E5A">For cremation: also requires Cremation Form 1 + Form 2 + medical referee approval. Three separate certificates must align before cremation can proceed.</div>
+    </div>
+
+    <!-- From death certificate — the master gate -->
+    <div class="gate-section" style="border-color:#D85A30;border-left-width:3px">
+      <div style="font-size:0.72rem;color:#D85A30;margin-bottom:0.5rem;font-style:italic;font-weight:bold">Death certificate unlocks — all of the following in parallel:</div>
+      
+      <div style="margin-bottom:0.75rem">
+        <div style="font-size:0.7rem;color:#888780;margin-bottom:0.3rem;text-transform:uppercase;letter-spacing:0.05em">Funeral costs</div>
+        <div class="unlock-grid">
+          <div class="task-node bank">Notify banks of death</div>
+          <div class="task-node bank">Request account freeze</div>
+          <div class="task-node funeral">Submit funeral invoice to estate</div>
+        </div>
+      </div>
+
+      <div style="margin-bottom:0.75rem">
+        <div style="font-size:0.7rem;color:#888780;margin-bottom:0.3rem;text-transform:uppercase;letter-spacing:0.05em">Legal / probate path <span style="font-size:0.65rem;color:#534AB7;text-transform:none;letter-spacing:0">(critical path — most assets blocked until this completes)</span></div>
+        <div class="unlock-grid">
+          <div class="task-node legal">Apply for probate or letters of administration</div>
+        </div>
+        <div class="arrow-down"><div class="arrow-line"></div><div class="arrow-head"></div></div>
+
+        <!-- GATE 3: PROBATE -->
+        <div class="gate-doc probate"><div class="doc-icon" style="color:#534AB7">✦</div>Grant of probate / letters of administration <span class="critical-label">critical gate</span></div>
+        <div class="arrow-down"><div class="arrow-line"></div><div class="arrow-head"></div></div>
+        <div class="gate-section" style="border-color:#534AB7">
+          <div style="font-size:0.72rem;color:#534AB7;margin-bottom:0.4rem;font-style:italic">Probate grant unlocks:</div>
+          <div class="unlock-grid">
+            <div class="task-node bank">Bank accounts released to executor</div>
+            <div class="task-node land">LINZ: register executor on title</div>
+            <div class="task-node legal">Share transmission (Companies Act)</div>
+            <div class="task-node social">KiwiSaver balance released</div>
+            <div class="task-node acc">Life insurance claim proceeds</div>
+            <div class="task-node legal">Full asset collection begins</div>
+          </div>
+          <div class="note-box" style="border-color:#AFA9EC;background:#EEEDFE;color:#3C3489">Probate can take 4–12 weeks after application. During this period, whānau may have no access to estate funds — including for immediate living expenses.</div>
+          
+          <div style="margin-top:0.75rem">
+            <div class="arrow-down"><div class="arrow-line"></div><div class="arrow-head"></div></div>
+            <div class="task-node legal" style="display:inline-flex;margin-bottom:0.4rem">Assets collected + debts paid + 6-week creditor period elapsed</div>
+            <div class="arrow-down"><div class="arrow-line"></div><div class="arrow-head"></div></div>
+            <div class="task-node legal" style="display:inline-flex;margin-bottom:0.4rem">FPA / testamentary promises claim period runs (12 months)</div>
+            <div class="arrow-down"><div class="arrow-line"></div><div class="arrow-head"></div></div>
+            <div class="task-node legal" style="display:inline-flex">Interim distributions to beneficiaries can begin</div>
+          </div>
+        </div>
+      </div>
+
+      <div style="margin-bottom:0.75rem">
+        <div style="font-size:0.7rem;color:#888780;margin-bottom:0.3rem;text-transform:uppercase;letter-spacing:0.05em">Tax path (runs in parallel with probate)</div>
+        <div class="unlock-grid">
+          <div class="task-node tax">Notify IRD of death</div>
+          <div class="task-node tax">Apply for estate IRD number</div>
+        </div>
+        <div class="arrow-down"><div class="arrow-line"></div><div class="arrow-head"></div></div>
+        <div class="gate-doc ird"><div class="doc-icon" style="color:#3B6D11">✦</div>Estate IRD number issued</div>
+        <div class="arrow-down"><div class="arrow-line"></div><div class="arrow-head"></div></div>
+        <div class="unlock-grid">
+          <div class="task-node tax">Estate income can be taxed separately</div>
+          <div class="task-node tax">File final IR3 (deceased) and estate IR6 returns</div>
+          <div class="task-node tax">Deregister GST if applicable</div>
+        </div>
+        <div class="arrow-down"><div class="arrow-line"></div><div class="arrow-head"></div></div>
+        <div class="gate-doc ird"><div class="doc-icon" style="color:#3B6D11">✦</div>IRD tax clearance</div>
+        <div class="arrow-down"><div class="arrow-line"></div><div class="arrow-head"></div></div>
+        <div class="task-node tax" style="display:inline-flex">Final distribution to beneficiaries is safe to make</div>
+      </div>
+
+      <div style="margin-bottom:0.75rem">
+        <div style="font-size:0.7rem;color:#888780;margin-bottom:0.3rem;text-transform:uppercase;letter-spacing:0.05em">Social / benefits path</div>
+        <div class="unlock-grid">
+          <div class="task-node social">Notify WINZ / MSD — stop NZ Super</div>
+          <div class="task-node social">Apply for survivor allowance / orphan's benefit</div>
+          <div class="task-node acc">Lodge ACC fatal injury claim (if accident / workplace)</div>
+        </div>
+      </div>
+
+      <div>
+        <div style="font-size:0.7rem;color:#888780;margin-bottom:0.3rem;text-transform:uppercase;letter-spacing:0.05em">Māori land path (requires separate track)</div>
+        <div class="unlock-grid">
+          <div class="task-node land">Apply for Māori Land Court succession order</div>
+        </div>
+        <div class="note-box" style="border-color:#EF9F27;background:#FAEEDA;color:#633806">Parallel to High Court probate. Māori freehold land cannot transmit without a separate Māori Land Court succession order. Two courts, two processes, one whānau.</div>
+        <div class="arrow-down"><div class="arrow-line"></div><div class="arrow-head"></div></div>
+        <div class="gate-doc" style="border-color:#BA7517"><div class="doc-icon" style="color:#BA7517">✦</div>Māori Land Court succession order</div>
+        <div class="arrow-down"><div class="arrow-line"></div><div class="arrow-head"></div></div>
+        <div class="task-node land" style="display:inline-flex">Māori freehold land can be registered to successors</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- FINAL CLOSURE -->
+<div class="gate" style="margin-top:1rem">
+  <div style="display:flex;align-items:center;gap:0.75rem;flex-wrap:wrap">
+    <div class="gate-doc" style="border-color:#0F6E56;background:#E1F5EE"><div class="doc-icon" style="color:#0F6E56">✦</div>All above complete + LINZ title transferred to beneficiaries</div>
+  </div>
+  <div class="arrow-down"><div class="arrow-line"></div><div class="arrow-head"></div></div>
+  <div style="background:#2C2C2A;color:#FAFAF8;border-radius:4px;padding:0.6rem 1rem;display:inline-flex;align-items:center;gap:8px;font-size:0.78rem;font-weight:bold;letter-spacing:0.02em">Estate closed</div>
+</div>
+
+</div><!-- end main -->
+<div class="ft">
+  SA4 Research — Nerine Walbran 2026 &nbsp;·&nbsp; Gate documents identified from: BDMRR Act 2021; Coroners Act 2006; Burial and Cremation Act 1964; Cremation Regulations 2018; Administration Act 1969; High Court Rules 2016; Income Tax Act 2007; Tax Administration Act 1994; Te Ture Whenua Māori Act 1993 &nbsp;·&nbsp; This map is a research artefact and does not constitute legal advice.
+</div>
+</body>
+</html>
